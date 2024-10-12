@@ -16,5 +16,22 @@ namespace AlgoritmosDePlanificacion
         {
 
         }
+
+        private void btnNoExpropiativo_Click(object sender, EventArgs e)
+        {
+            //Redirigir al SubMenú No Expropiativos
+            SubMenuNoExpropiativos nuevoForm = new SubMenuNoExpropiativos();
+            this.Hide();
+            nuevoForm.Show();
+        }
+
+        private void btnExpropiativo_Click(object sender, EventArgs e)
+        {
+            //Redirigir al SubMenú Expropiativos
+            SubMenuExpropiativos nuevoForm = new SubMenuExpropiativos();
+            this.Hide();
+            nuevoForm.Show();
+        }
+
     }
 }
