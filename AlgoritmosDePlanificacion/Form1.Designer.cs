@@ -39,11 +39,13 @@
             // 
             // btnExpropiativo
             // 
-            btnExpropiativo.Font = new Font("Arial Narrow", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExpropiativo.Location = new Point(112, 318);
+            btnExpropiativo.Cursor = Cursors.Hand;
+            btnExpropiativo.FlatStyle = FlatStyle.System;
+            btnExpropiativo.Font = new Font("Arial", 14F, FontStyle.Bold);
+            btnExpropiativo.Location = new Point(125, 395);
             btnExpropiativo.Margin = new Padding(2);
             btnExpropiativo.Name = "btnExpropiativo";
-            btnExpropiativo.Size = new Size(192, 60);
+            btnExpropiativo.Size = new Size(255, 75);
             btnExpropiativo.TabIndex = 0;
             btnExpropiativo.Text = "Expropiativos";
             btnExpropiativo.UseVisualStyleBackColor = true;
@@ -51,11 +53,13 @@
             // 
             // btnNoExpropiativo
             // 
-            btnNoExpropiativo.Font = new Font("Arial Narrow", 14F, FontStyle.Bold);
-            btnNoExpropiativo.Location = new Point(420, 318);
+            btnNoExpropiativo.Cursor = Cursors.Hand;
+            btnNoExpropiativo.FlatStyle = FlatStyle.System;
+            btnNoExpropiativo.Font = new Font("Arial", 14F, FontStyle.Bold);
+            btnNoExpropiativo.Location = new Point(510, 395);
             btnNoExpropiativo.Margin = new Padding(2);
             btnNoExpropiativo.Name = "btnNoExpropiativo";
-            btnNoExpropiativo.Size = new Size(192, 60);
+            btnNoExpropiativo.Size = new Size(255, 75);
             btnNoExpropiativo.TabIndex = 1;
             btnNoExpropiativo.Text = "No Expropiativos";
             btnNoExpropiativo.UseVisualStyleBackColor = true;
@@ -67,10 +71,10 @@
             label1.AutoSize = true;
             label1.CausesValidation = false;
             label1.Font = new Font("Century Gothic", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(180, 38);
+            label1.Location = new Point(225, 60);
             label1.Margin = new Padding(2, 0, 2, 0);
             label1.Name = "label1";
-            label1.Size = new Size(377, 47);
+            label1.Size = new Size(447, 56);
             label1.TabIndex = 2;
             label1.Text = "A L G O R I T M O S";
             label1.Click += label1_Click;
@@ -79,10 +83,10 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Cooper Black", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(340, 91);
+            label2.Location = new Point(418, 126);
             label2.Margin = new Padding(2, 0, 2, 0);
             label2.Name = "label2";
-            label2.Size = new Size(51, 35);
+            label2.Size = new Size(60, 41);
             label2.TabIndex = 3;
             label2.Text = "de";
             // 
@@ -90,10 +94,10 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Cascadia Code SemiBold", 22F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(219, 123);
+            label3.Location = new Point(274, 166);
             label3.Margin = new Padding(2, 0, 2, 0);
             label3.Name = "label3";
-            label3.Size = new Size(308, 49);
+            label3.Size = new Size(363, 58);
             label3.TabIndex = 4;
             label3.Text = "Planificación";
             // 
@@ -101,10 +105,10 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Century Gothic", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.Location = new Point(238, 177);
+            label4.Location = new Point(298, 233);
             label4.Margin = new Padding(2, 0, 2, 0);
             label4.Name = "label4";
-            label4.Size = new Size(270, 30);
+            label4.Size = new Size(310, 34);
             label4.TabIndex = 5;
             label4.Text = "(Sistemas Operativos)";
             label4.Click += label4_Click;
@@ -113,18 +117,18 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Century Gothic", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label5.Location = new Point(231, 261);
+            label5.Location = new Point(289, 307);
             label5.Margin = new Padding(2, 0, 2, 0);
             label5.Name = "label5";
-            label5.Size = new Size(267, 28);
+            label5.Size = new Size(318, 34);
             label5.TabIndex = 6;
             label5.Text = "Seleccione su opción:";
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(702, 435);
+            ClientSize = new Size(878, 544);
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(label3);
@@ -134,7 +138,9 @@
             Controls.Add(btnExpropiativo);
             Margin = new Padding(2);
             Name = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
+            FormClosing += Form1_FormClosing;
             ResumeLayout(false);
             PerformLayout();
         }

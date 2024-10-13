@@ -33,5 +33,12 @@ namespace AlgoritmosDePlanificacion
             nuevoForm.Show();
         }
 
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                Environment.Exit(0);
+            }
+        }
     }
 }

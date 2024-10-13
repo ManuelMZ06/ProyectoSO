@@ -28,31 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label3 = new Label();
             label1 = new Label();
             lbTitulo = new Label();
             btnRR = new Button();
             btnSRTJ = new Button();
-            label2 = new Label();
             btnRegresarMenu1 = new Button();
+            label4 = new Label();
+            label2 = new Label();
             SuspendLayout();
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(153, 88);
-            label3.Name = "label3";
-            label3.Size = new Size(501, 20);
-            label3.TabIndex = 11;
-            label3.Text = "__________________________________________________________________________________";
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Verdana", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(301, 60);
+            label1.Location = new Point(376, 145);
+            label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new Size(204, 28);
+            label1.Size = new Size(247, 34);
             label1.TabIndex = 10;
             label1.Text = "EXPROPIATIVOS";
             // 
@@ -60,18 +52,22 @@
             // 
             lbTitulo.AutoSize = true;
             lbTitulo.Font = new Font("Times New Roman", 25.8000011F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbTitulo.Location = new Point(201, 9);
+            lbTitulo.Location = new Point(270, 76);
+            lbTitulo.Margin = new Padding(4, 0, 4, 0);
             lbTitulo.Name = "lbTitulo";
-            lbTitulo.Size = new Size(400, 51);
+            lbTitulo.Size = new Size(476, 60);
             lbTitulo.TabIndex = 9;
             lbTitulo.Text = "A L G O R I T M O S";
             // 
             // btnRR
             // 
-            btnRR.BackColor = Color.Salmon;
-            btnRR.Location = new Point(-1, 228);
+            btnRR.BackColor = Color.CornflowerBlue;
+            btnRR.Cursor = Cursors.Hand;
+            btnRR.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnRR.Location = new Point(274, 343);
+            btnRR.Margin = new Padding(4);
             btnRR.Name = "btnRR";
-            btnRR.Size = new Size(803, 38);
+            btnRR.Size = new Size(453, 48);
             btnRR.TabIndex = 13;
             btnRR.Text = "ROUND ROBIN";
             btnRR.UseVisualStyleBackColor = false;
@@ -79,59 +75,79 @@
             // 
             // btnSRTJ
             // 
-            btnSRTJ.BackColor = Color.Coral;
-            btnSRTJ.Location = new Point(-1, 184);
+            btnSRTJ.BackColor = Color.RoyalBlue;
+            btnSRTJ.Cursor = Cursors.Hand;
+            btnSRTJ.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnSRTJ.Location = new Point(274, 288);
+            btnSRTJ.Margin = new Padding(4);
             btnSRTJ.Name = "btnSRTJ";
-            btnSRTJ.Size = new Size(803, 38);
+            btnSRTJ.Size = new Size(453, 48);
             btnSRTJ.TabIndex = 12;
             btnSRTJ.Text = "SHORT REMAINING TIME FIRST -- SRTJ";
             btnSRTJ.UseVisualStyleBackColor = false;
             // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(12, 139);
-            label2.Name = "label2";
-            label2.Size = new Size(136, 20);
-            label2.TabIndex = 14;
-            label2.Text = "ELIJA UNA OPCIÓN";
-            // 
             // btnRegresarMenu1
             // 
-            btnRegresarMenu1.Location = new Point(201, 287);
+            btnRegresarMenu1.Cursor = Cursors.Hand;
+            btnRegresarMenu1.Font = new Font("Arial Narrow", 10F, FontStyle.Bold);
+            btnRegresarMenu1.Location = new Point(376, 417);
+            btnRegresarMenu1.Margin = new Padding(4);
             btnRegresarMenu1.Name = "btnRegresarMenu1";
-            btnRegresarMenu1.Size = new Size(400, 29);
+            btnRegresarMenu1.Size = new Size(248, 36);
             btnRegresarMenu1.TabIndex = 15;
-            btnRegresarMenu1.Text = "Regresar al Menú Principal UwU";
+            btnRegresarMenu1.Text = "REGRESAR";
             btnRegresarMenu1.UseVisualStyleBackColor = true;
             btnRegresarMenu1.Click += btnRegresarMenu1_Click;
             // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Verdana", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.ForeColor = Color.DodgerBlue;
+            label4.Location = new Point(-20, 167);
+            label4.Margin = new Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(1023, 34);
+            label4.TabIndex = 16;
+            label4.Text = "________________________________________________________";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(388, 232);
+            label2.Margin = new Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new Size(225, 25);
+            label2.TabIndex = 17;
+            label2.Text = "SELECCIONE UNA OPCIÓN";
+            // 
             // SubMenuExpropiativos
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(btnRegresarMenu1);
+            ClientSize = new Size(1000, 562);
             Controls.Add(label2);
+            Controls.Add(btnRegresarMenu1);
             Controls.Add(btnRR);
             Controls.Add(btnSRTJ);
-            Controls.Add(label3);
             Controls.Add(label1);
             Controls.Add(lbTitulo);
+            Controls.Add(label4);
+            Margin = new Padding(4);
             Name = "SubMenuExpropiativos";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "SubMenuExpropiativos";
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private Label label3;
         private Label label1;
         private Label lbTitulo;
         private Button btnRR;
         private Button btnSRTJ;
-        private Label label2;
         private Button btnRegresarMenu1;
+        private Label label4;
+        private Label label2;
     }
 }
