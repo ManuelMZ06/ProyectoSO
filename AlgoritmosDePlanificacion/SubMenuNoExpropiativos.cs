@@ -42,5 +42,14 @@ namespace AlgoritmosDePlanificacion
             this.Hide();
             nuevoForm.Show();
         }
+
+        private void btnPrioridad_Click(object sender, EventArgs e)
+        {
+
+            PRIORIDAD formPrioridad = new PRIORIDAD();
+
+            formPrioridad.Show();
+
+        }
     }
 }
