@@ -110,6 +110,7 @@
             brnHRRN.TabIndex = 5;
             brnHRRN.Text = "HIGHEST RESPONSE RATIO NEXT -- HRRN";
             brnHRRN.UseVisualStyleBackColor = false;
+            brnHRRN.Click += brnHRRN_Click;
             // 
             // button1
             // 

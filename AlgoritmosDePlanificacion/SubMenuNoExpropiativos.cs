@@ -45,11 +45,17 @@ namespace AlgoritmosDePlanificacion
 
         private void btnPrioridad_Click(object sender, EventArgs e)
         {
+            //Redirigir al FORM PRIORIDAD
+            Form2 nuevoForm = new Form2();
+            this.Hide();
+            nuevoForm.Show();
+        }
 
+        private void brnHRRN_Click(object sender, EventArgs e)
+        {
             PRIORIDAD formPrioridad = new PRIORIDAD();
 
             formPrioridad.Show();
-
         }
     }
 }
