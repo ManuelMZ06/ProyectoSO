@@ -20,7 +20,10 @@ namespace AlgoritmosDePlanificacion
 
         private void PRIORIDAD_Load(object sender, EventArgs e)
         {
-
+            // Bloquear columnas específicas
+            dataGridView1.Columns["TIEMPODEFINALIZACION"].ReadOnly = true; // Tiempo de finalización
+            dataGridView1.Columns["TIEMPODERETORNO"].ReadOnly = true; // Tiempo de retorno
+            dataGridView1.Columns["TIEMPODEESPERA"].ReadOnly = true; // Tiempo de espera
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -59,10 +62,17 @@ namespace AlgoritmosDePlanificacion
 
         private void button1_Click(object sender, EventArgs e)
         {
+            // Verificar si el DataGridView está vacío
+            if (dataGridView1.Rows.Count == 0 || (dataGridView1.Rows.Count == 1 && dataGridView1.Rows[0].IsNewRow))
+            {
+                MessageBox.Show("El DataGrid está vacío. Por favor, agrega procesos antes de calcular.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Salir del método si está vacío
+            }
+
             CalcularAlgoritmoPrioridad();
             DibujarGrafico();
-
         }
+
 
 
         private void button2_Click(object sender, EventArgs e)
@@ -248,6 +258,27 @@ namespace AlgoritmosDePlanificacion
 
         private void chart1_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            // Regresar al sub Menú
+            SubMenuNoExpropiativos nuevoForm = new SubMenuNoExpropiativos();
+            this.Hide();
+            nuevoForm.Show();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            // Mostrar un cuadro de mensaje con "Hola"
+            MessageBox.Show("Es un algoritmo de planificación de procesos en el que se asigna una prioridad a cada proceso. Los procesos con mayor prioridad son ejecutados antes que los de menor prioridad. Si dos o más procesos tienen la misma prioridad, se pueden manejar de acuerdo a otros criterios, como el tiempo de llegada. Este enfoque ayuda a asegurar que los procesos críticos se completen antes que los menos importantes, optimizando así el uso de recursos y mejorando el rendimiento del sistema.", "Proceso de Prioridad");
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            // Mostrar un cuadro de mensaje con "Hola"
+            MessageBox.Show("La planificación por prioridades ejecuta procesos según su nivel de prioridad, dando preferencia a los más críticos. Si llega un proceso de mayor prioridad, puede interrumpir el actual, lo que puede causar problemas como starvation para los de baja prioridad.", "Proceso de Planificación por Prioridades");
 
         }
     }
