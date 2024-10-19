@@ -98,6 +98,7 @@
             btnSPN.TabIndex = 4;
             btnSPN.Text = "SHORT PROCESS NEXT -- SPN";
             btnSPN.UseVisualStyleBackColor = false;
+            btnSPN.Click += btnSPN_Click;
             // 
             // brnHRRN
             // 
@@ -123,6 +124,7 @@
             button1.TabIndex = 6;
             button1.Text = "SHORT JOB FIRST -- SJF";
             button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
             // 
             // label2
             // 

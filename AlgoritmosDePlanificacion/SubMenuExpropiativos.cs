@@ -29,5 +29,13 @@ namespace AlgoritmosDePlanificacion
             this.Hide();
             nuevoForm.Show();
         }
+
+        private void btnSRTJ_Click(object sender, EventArgs e)
+        {
+            //Redirigir al SubMenú No Expropiativosnece
+            SRTF nuevoForm = new SRTF();
+            this.Hide();
+            nuevoForm.Show();
+        }
     }
 }
