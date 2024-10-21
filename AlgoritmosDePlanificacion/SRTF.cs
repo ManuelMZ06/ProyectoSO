@@ -176,7 +176,7 @@ namespace AlgoritmosDePlanificacion
 
         private void button1_Click(object sender, EventArgs e)
         { //Regresar al sub Menú
-            Form1 nuevoForm = new Form1();
+            SubMenuExpropiativos nuevoForm = new SubMenuExpropiativos();
             this.Hide();
             nuevoForm.Show();
         }
@@ -188,22 +188,22 @@ namespace AlgoritmosDePlanificacion
         {
             AceptarDatos();
         }
-        
+
 
 
         private void button3_Click(object sender, EventArgs e)
         {
-            lbProcesos.Items.Clear();
-
-            lbCPU.Items.Clear();
-            lbLlegada.Items.Clear();
-            lbFinalizacion.Items.Clear();
-            lbRetorno.Items.Clear();
-            lbEspera.Items.Clear();
-            txtSumaCPU.Clear();
-            txtPromRetorno.Clear();
-            txtPromEspera.Clear();
-            txtNoProcesos.Clear();
+            this.Hide();
+            SRTF reset = new SRTF();
+            reset.Show();
         }
-    
-    } }
+
+        private void SRTF_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                Environment.Exit(0);
+            }
+        }
+    }
+}

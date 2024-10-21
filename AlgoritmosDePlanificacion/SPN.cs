@@ -113,7 +113,9 @@ namespace AlgoritmosDePlanificacion
         // Asignar el método LimpiarTodo al evento Click del botón "Limpiar"
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
-            LimpiarTodo(); // Llamada a la función de limpieza
+            this.Hide();
+            Form3 reset = new Form3();
+            reset.Show();
         }
 
         // Modificar esta función para llenar las listas con el orden original después de calcular
@@ -270,7 +272,17 @@ namespace AlgoritmosDePlanificacion
 
         private void button2_Click_1(object sender, EventArgs e)
         {
-            LimpiarTodo();
+            this.Hide();
+            Form3 reset = new Form3();
+            reset.Show();
+        }
+
+        private void Form3_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                Environment.Exit(0);
+            }
         }
     }
 

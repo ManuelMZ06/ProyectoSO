@@ -173,16 +173,9 @@ namespace AlgoritmosDePlanificacion
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
-            lbProcesos.Items.Clear();
-            lbCPU.Items.Clear();
-            lbLlegada.Items.Clear();
-            lbFinalizacion.Items.Clear();
-            lbRetorno.Items.Clear();
-            lbEspera.Items.Clear();
-            txtSumaCPU.Clear();
-            txtPromRetorno.Clear();
-            txtPromEspera.Clear();
-            txtNoProcesos.Clear();
+            this.Hide();
+            FIFO reset = new FIFO();
+            reset.Show();
         }
     }
 }

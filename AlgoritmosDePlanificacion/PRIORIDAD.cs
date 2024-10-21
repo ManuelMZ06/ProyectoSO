@@ -77,8 +77,9 @@ namespace AlgoritmosDePlanificacion
 
         private void button2_Click(object sender, EventArgs e)
         {
-            LimpiarDataGridView();
-
+            this.Hide();
+            PRIORIDAD reset = new PRIORIDAD();
+            reset.Show();
         }
 
 
@@ -280,6 +281,14 @@ namespace AlgoritmosDePlanificacion
             // Mostrar un cuadro de mensaje con "Hola"
             MessageBox.Show("La planificación por prioridades ejecuta procesos según su nivel de prioridad, dando preferencia a los más críticos. Si llega un proceso de mayor prioridad, puede interrumpir el actual, lo que puede causar problemas como starvation para los de baja prioridad.", "Proceso de Planificación por Prioridades");
 
+        }
+
+        private void PRIORIDAD_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                Environment.Exit(0);
+            }
         }
     }
 }

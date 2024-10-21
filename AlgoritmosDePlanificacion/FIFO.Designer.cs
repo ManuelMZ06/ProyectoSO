@@ -88,7 +88,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Lucida Bright", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(367, 92);
+            label2.Location = new Point(367, 100);
             label2.Name = "label2";
             label2.Size = new Size(344, 24);
             label2.TabIndex = 2;
@@ -99,7 +99,7 @@
             txtNoProcesos.BorderStyle = BorderStyle.FixedSingle;
             txtNoProcesos.Cursor = Cursors.IBeam;
             txtNoProcesos.Font = new Font("Segoe UI", 11F);
-            txtNoProcesos.Location = new Point(739, 87);
+            txtNoProcesos.Location = new Point(739, 95);
             txtNoProcesos.Name = "txtNoProcesos";
             txtNoProcesos.Size = new Size(150, 37);
             txtNoProcesos.TabIndex = 3;
@@ -113,7 +113,7 @@
             lbProcesos.Font = new Font("Segoe UI", 11F);
             lbProcesos.FormattingEnabled = true;
             lbProcesos.ItemHeight = 30;
-            lbProcesos.Location = new Point(27, 234);
+            lbProcesos.Location = new Point(27, 261);
             lbProcesos.Name = "lbProcesos";
             lbProcesos.Size = new Size(110, 302);
             lbProcesos.TabIndex = 4;
@@ -122,7 +122,7 @@
             // 
             btnAceptar.Cursor = Cursors.Hand;
             btnAceptar.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            btnAceptar.Location = new Point(565, 133);
+            btnAceptar.Location = new Point(565, 150);
             btnAceptar.Name = "btnAceptar";
             btnAceptar.Size = new Size(109, 38);
             btnAceptar.TabIndex = 5;
@@ -138,7 +138,7 @@
             lbCPU.Font = new Font("Segoe UI", 11F);
             lbCPU.FormattingEnabled = true;
             lbCPU.ItemHeight = 30;
-            lbCPU.Location = new Point(157, 234);
+            lbCPU.Location = new Point(157, 261);
             lbCPU.Name = "lbCPU";
             lbCPU.Size = new Size(160, 302);
             lbCPU.TabIndex = 6;
@@ -151,7 +151,7 @@
             lbLlegada.Font = new Font("Segoe UI", 11F);
             lbLlegada.FormattingEnabled = true;
             lbLlegada.ItemHeight = 30;
-            lbLlegada.Location = new Point(339, 234);
+            lbLlegada.Location = new Point(339, 261);
             lbLlegada.Name = "lbLlegada";
             lbLlegada.Size = new Size(204, 302);
             lbLlegada.TabIndex = 7;
@@ -164,7 +164,7 @@
             lbFinalizacion.Font = new Font("Segoe UI", 11F);
             lbFinalizacion.FormattingEnabled = true;
             lbFinalizacion.ItemHeight = 30;
-            lbFinalizacion.Location = new Point(564, 234);
+            lbFinalizacion.Location = new Point(564, 261);
             lbFinalizacion.Name = "lbFinalizacion";
             lbFinalizacion.Size = new Size(250, 302);
             lbFinalizacion.TabIndex = 8;
@@ -177,7 +177,7 @@
             lbRetorno.Font = new Font("Segoe UI", 11F);
             lbRetorno.FormattingEnabled = true;
             lbRetorno.ItemHeight = 30;
-            lbRetorno.Location = new Point(836, 234);
+            lbRetorno.Location = new Point(836, 261);
             lbRetorno.Name = "lbRetorno";
             lbRetorno.Size = new Size(209, 302);
             lbRetorno.TabIndex = 9;
@@ -190,7 +190,7 @@
             lbEspera.Font = new Font("Segoe UI", 11F);
             lbEspera.FormattingEnabled = true;
             lbEspera.ItemHeight = 30;
-            lbEspera.Location = new Point(1062, 234);
+            lbEspera.Location = new Point(1062, 261);
             lbEspera.Name = "lbEspera";
             lbEspera.Size = new Size(188, 302);
             lbEspera.TabIndex = 10;
@@ -199,7 +199,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label3.Location = new Point(27, 190);
+            label3.Location = new Point(27, 217);
             label3.Name = "label3";
             label3.Size = new Size(110, 28);
             label3.TabIndex = 11;
@@ -210,7 +210,7 @@
             // 
             txtPromRetorno.BorderStyle = BorderStyle.FixedSingle;
             txtPromRetorno.Font = new Font("Segoe UI", 11F);
-            txtPromRetorno.Location = new Point(836, 564);
+            txtPromRetorno.Location = new Point(836, 591);
             txtPromRetorno.Name = "txtPromRetorno";
             txtPromRetorno.ReadOnly = true;
             txtPromRetorno.Size = new Size(209, 37);
@@ -221,7 +221,7 @@
             // 
             txtPromEspera.BorderStyle = BorderStyle.FixedSingle;
             txtPromEspera.Font = new Font("Segoe UI", 11F);
-            txtPromEspera.Location = new Point(1062, 564);
+            txtPromEspera.Location = new Point(1062, 591);
             txtPromEspera.Name = "txtPromEspera";
             txtPromEspera.ReadOnly = true;
             txtPromEspera.Size = new Size(188, 37);
@@ -232,7 +232,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label4.Location = new Point(701, 569);
+            label4.Location = new Point(701, 596);
             label4.Name = "label4";
             label4.Size = new Size(130, 28);
             label4.TabIndex = 14;
@@ -242,7 +242,7 @@
             // 
             txtSumaCPU.BorderStyle = BorderStyle.FixedSingle;
             txtSumaCPU.Font = new Font("Segoe UI", 11F);
-            txtSumaCPU.Location = new Point(157, 564);
+            txtSumaCPU.Location = new Point(157, 591);
             txtSumaCPU.Name = "txtSumaCPU";
             txtSumaCPU.ReadOnly = true;
             txtSumaCPU.Size = new Size(160, 37);
@@ -253,7 +253,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label5.Location = new Point(78, 567);
+            label5.Location = new Point(78, 594);
             label5.Name = "label5";
             label5.Size = new Size(73, 28);
             label5.TabIndex = 16;
@@ -263,7 +263,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label6.Location = new Point(157, 190);
+            label6.Location = new Point(157, 217);
             label6.Name = "label6";
             label6.Size = new Size(160, 28);
             label6.TabIndex = 17;
@@ -273,7 +273,7 @@
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label7.Location = new Point(339, 190);
+            label7.Location = new Point(339, 217);
             label7.Name = "label7";
             label7.Size = new Size(204, 28);
             label7.TabIndex = 18;
@@ -283,7 +283,7 @@
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label8.Location = new Point(561, 190);
+            label8.Location = new Point(561, 217);
             label8.Name = "label8";
             label8.Size = new Size(253, 28);
             label8.TabIndex = 19;
@@ -293,7 +293,7 @@
             // 
             label9.AutoSize = true;
             label9.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label9.Location = new Point(836, 190);
+            label9.Location = new Point(836, 217);
             label9.Name = "label9";
             label9.Size = new Size(209, 28);
             label9.TabIndex = 20;
@@ -303,7 +303,7 @@
             // 
             label10.AutoSize = true;
             label10.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label10.Location = new Point(1062, 190);
+            label10.Location = new Point(1062, 217);
             label10.Name = "label10";
             label10.Size = new Size(188, 28);
             label10.TabIndex = 21;
@@ -313,7 +313,7 @@
             // 
             btnLimpiar.Cursor = Cursors.Hand;
             btnLimpiar.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            btnLimpiar.Location = new Point(562, 630);
+            btnLimpiar.Location = new Point(562, 654);
             btnLimpiar.Name = "btnLimpiar";
             btnLimpiar.Size = new Size(112, 38);
             btnLimpiar.TabIndex = 23;
@@ -327,14 +327,14 @@
             chart1.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             chart1.Legends.Add(legend1);
-            chart1.Location = new Point(60, 687);
+            chart1.Location = new Point(60, 709);
             chart1.Name = "chart1";
-            chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SemiTransparent;
+            chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Grayscale;
             series1.ChartArea = "ChartArea1";
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             chart1.Series.Add(series1);
-            chart1.Size = new Size(1151, 388);
+            chart1.Size = new Size(1151, 366);
             chart1.TabIndex = 22;
             chart1.Text = "chart1";
             // 

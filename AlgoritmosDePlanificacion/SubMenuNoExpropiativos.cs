@@ -70,6 +70,18 @@ namespace AlgoritmosDePlanificacion
 
         private void button1_Click(object sender, EventArgs e)
         {
+            //Redirigir al form SJF
+            SJF sjf = new SJF();
+            this.Hide();
+            sjf.Show();
+        }
+
+        private void SubMenuNoExpropiativos_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                Environment.Exit(0);
+            }
         }
     }
 }

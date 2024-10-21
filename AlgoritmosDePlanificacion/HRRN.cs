@@ -82,7 +82,9 @@ namespace AlgoritmosDePlanificacion
                 // En caso de error, limpiar y mostrar mensaje
                 txtNoProceso.Text = "";
                 MessageBox.Show("Ingrese un dato válido", "Error Inesperado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LimpiarCampos();
+                this.Hide();
+                HRRN reset = new HRRN();
+                reset.Show();
             }
         }
 
@@ -331,7 +333,17 @@ namespace AlgoritmosDePlanificacion
 
         private void button3_Click(object sender, EventArgs e)
         {
+            this.Hide();
+            HRRN reset = new HRRN();
+            reset.Show();
+        }
 
+        private void HRRN_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                Environment.Exit(0);
+            }
         }
     }
 }

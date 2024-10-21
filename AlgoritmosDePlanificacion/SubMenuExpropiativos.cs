@@ -19,12 +19,14 @@ namespace AlgoritmosDePlanificacion
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            ROUNDROBIN newFORM = new ROUNDROBIN();
+            this.Hide();
+            newFORM.Show();
         }
 
         private void btnRegresarMenu1_Click(object sender, EventArgs e)
         {
-            //Redirigir al SubMenú No Expropiativosnece
+            //Redirigir al Menú
             Form1 nuevoForm = new Form1();
             this.Hide();
             nuevoForm.Show();
@@ -32,10 +34,18 @@ namespace AlgoritmosDePlanificacion
 
         private void btnSRTJ_Click(object sender, EventArgs e)
         {
-            //Redirigir al SubMenú No Expropiativosnece
+            //Redirigir al SRTF
             SRTF nuevoForm = new SRTF();
             this.Hide();
             nuevoForm.Show();
+        }
+
+        private void SubMenuExpropiativos_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                Environment.Exit(0);
+            }
         }
     }
 }

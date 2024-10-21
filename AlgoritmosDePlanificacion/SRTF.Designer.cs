@@ -61,10 +61,10 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Lucida Bright", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(885, 79);
+            label3.Location = new Point(396, 185);
             label3.Margin = new Padding(2, 0, 2, 0);
             label3.Name = "label3";
-            label3.Size = new Size(300, 22);
+            label3.Size = new Size(344, 24);
             label3.TabIndex = 53;
             label3.Text = "Ingrese el Número de Procesos:";
             // 
@@ -72,10 +72,10 @@
             // 
             label11.AutoSize = true;
             label11.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label11.Location = new Point(923, 259);
+            label11.Location = new Point(1083, 316);
             label11.Margin = new Padding(2, 0, 2, 0);
             label11.Name = "label11";
-            label11.Size = new Size(69, 23);
+            label11.Size = new Size(80, 28);
             label11.TabIndex = 52;
             label11.Text = "ESPERA";
             label11.TextAlign = ContentAlignment.TopCenter;
@@ -84,10 +84,10 @@
             // 
             label10.AutoSize = true;
             label10.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label10.Location = new Point(763, 259);
+            label10.Location = new Point(883, 316);
             label10.Margin = new Padding(2, 0, 2, 0);
             label10.Name = "label10";
-            label10.Size = new Size(88, 23);
+            label10.Size = new Size(101, 28);
             label10.TabIndex = 51;
             label10.Text = "RETORNO";
             label10.TextAlign = ContentAlignment.TopCenter;
@@ -96,10 +96,10 @@
             // 
             label9.AutoSize = true;
             label9.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label9.Location = new Point(583, 259);
+            label9.Location = new Point(658, 316);
             label9.Margin = new Padding(2, 0, 2, 0);
             label9.Name = "label9";
-            label9.Size = new Size(124, 23);
+            label9.Size = new Size(145, 28);
             label9.TabIndex = 50;
             label9.Text = "FINALIZACION";
             label9.TextAlign = ContentAlignment.TopCenter;
@@ -108,10 +108,10 @@
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label7.Location = new Point(411, 259);
+            label7.Location = new Point(443, 316);
             label7.Margin = new Padding(2, 0, 2, 0);
             label7.Name = "label7";
-            label7.Size = new Size(150, 23);
+            label7.Size = new Size(176, 28);
             label7.TabIndex = 49;
             label7.Text = "TIEMPO/LLEGADA";
             label7.TextAlign = ContentAlignment.TopCenter;
@@ -120,10 +120,10 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label6.Location = new Point(305, 259);
+            label6.Location = new Point(310, 316);
             label6.Margin = new Padding(2, 0, 2, 0);
             label6.Name = "label6";
-            label6.Size = new Size(43, 23);
+            label6.Size = new Size(50, 28);
             label6.TabIndex = 48;
             label6.Text = "CPU";
             label6.TextAlign = ContentAlignment.TopCenter;
@@ -132,10 +132,10 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label5.Location = new Point(129, 259);
+            label5.Location = new Point(90, 316);
             label5.Margin = new Padding(2, 0, 2, 0);
             label5.Name = "label5";
-            label5.Size = new Size(95, 23);
+            label5.Size = new Size(110, 28);
             label5.TabIndex = 47;
             label5.Text = "PROCESOS";
             label5.TextAlign = ContentAlignment.TopCenter;
@@ -144,10 +144,11 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Britannic Bold", 25.8000011F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.ForeColor = Color.RosyBrown;
-            label2.Location = new Point(435, 154);
+            label2.ForeColor = Color.RoyalBlue;
+            label2.Location = new Point(579, 101);
+            label2.Margin = new Padding(4, 0, 4, 0);
             label2.Name = "label2";
-            label2.Size = new Size(117, 48);
+            label2.Size = new Size(140, 58);
             label2.TabIndex = 46;
             label2.Text = "SRTF";
             // 
@@ -155,117 +156,156 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Britannic Bold", 25.8000011F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.ForeColor = Color.RosyBrown;
-            label1.Location = new Point(158, 83);
+            label1.ForeColor = Color.RoyalBlue;
+            label1.Location = new Point(225, 34);
+            label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new Size(680, 48);
+            label1.Size = new Size(808, 58);
             label1.TabIndex = 45;
             label1.Text = "SHORTEST REMAINING TIME FIRST";
             // 
             // lbProcesos
             // 
+            lbProcesos.Font = new Font("Segoe UI", 11F);
             lbProcesos.FormattingEnabled = true;
-            lbProcesos.Location = new Point(102, 285);
+            lbProcesos.ItemHeight = 30;
+            lbProcesos.Location = new Point(57, 348);
+            lbProcesos.Margin = new Padding(4);
             lbProcesos.Name = "lbProcesos";
-            lbProcesos.Size = new Size(149, 244);
+            lbProcesos.Size = new Size(185, 304);
             lbProcesos.TabIndex = 54;
             // 
             // lbCPU
             // 
+            lbCPU.Font = new Font("Segoe UI", 11F);
             lbCPU.FormattingEnabled = true;
-            lbCPU.Location = new Point(257, 285);
+            lbCPU.ItemHeight = 30;
+            lbCPU.Location = new Point(250, 348);
+            lbCPU.Margin = new Padding(4);
             lbCPU.Name = "lbCPU";
-            lbCPU.Size = new Size(149, 244);
+            lbCPU.Size = new Size(185, 304);
             lbCPU.TabIndex = 55;
             // 
             // lbLlegada
             // 
+            lbLlegada.Font = new Font("Segoe UI", 11F);
             lbLlegada.FormattingEnabled = true;
-            lbLlegada.Location = new Point(414, 285);
+            lbLlegada.ItemHeight = 30;
+            lbLlegada.Location = new Point(447, 348);
+            lbLlegada.Margin = new Padding(4);
             lbLlegada.Name = "lbLlegada";
-            lbLlegada.Size = new Size(149, 244);
+            lbLlegada.Size = new Size(185, 304);
             lbLlegada.TabIndex = 56;
             // 
             // lbFinalizacion
             // 
+            lbFinalizacion.Font = new Font("Segoe UI", 11F);
             lbFinalizacion.FormattingEnabled = true;
-            lbFinalizacion.Location = new Point(571, 285);
+            lbFinalizacion.ItemHeight = 30;
+            lbFinalizacion.Location = new Point(643, 348);
+            lbFinalizacion.Margin = new Padding(4);
             lbFinalizacion.Name = "lbFinalizacion";
-            lbFinalizacion.Size = new Size(149, 244);
+            lbFinalizacion.Size = new Size(185, 304);
             lbFinalizacion.TabIndex = 57;
             // 
             // lbRetorno
             // 
+            lbRetorno.Font = new Font("Segoe UI", 11F);
             lbRetorno.FormattingEnabled = true;
-            lbRetorno.Location = new Point(730, 285);
+            lbRetorno.ItemHeight = 30;
+            lbRetorno.Location = new Point(841, 348);
+            lbRetorno.Margin = new Padding(4);
             lbRetorno.Name = "lbRetorno";
-            lbRetorno.Size = new Size(149, 244);
+            lbRetorno.Size = new Size(185, 304);
             lbRetorno.TabIndex = 58;
             // 
             // lbEspera
             // 
+            lbEspera.Font = new Font("Segoe UI", 11F);
             lbEspera.FormattingEnabled = true;
-            lbEspera.Location = new Point(885, 285);
+            lbEspera.ItemHeight = 30;
+            lbEspera.Location = new Point(1035, 348);
+            lbEspera.Margin = new Padding(4);
             lbEspera.Name = "lbEspera";
-            lbEspera.Size = new Size(149, 244);
+            lbEspera.Size = new Size(185, 304);
             lbEspera.TabIndex = 59;
             // 
             // txtNoProcesos
             // 
-            txtNoProcesos.Location = new Point(885, 119);
+            txtNoProcesos.BorderStyle = BorderStyle.FixedSingle;
+            txtNoProcesos.Cursor = Cursors.IBeam;
+            txtNoProcesos.Font = new Font("Segoe UI", 11F);
+            txtNoProcesos.Location = new Point(746, 179);
+            txtNoProcesos.Margin = new Padding(4);
             txtNoProcesos.Name = "txtNoProcesos";
-            txtNoProcesos.Size = new Size(300, 27);
+            txtNoProcesos.Size = new Size(150, 37);
             txtNoProcesos.TabIndex = 60;
             // 
             // button1
             // 
-            button1.Location = new Point(30, 24);
+            button1.Cursor = Cursors.Hand;
+            button1.FlatStyle = FlatStyle.System;
+            button1.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            button1.Location = new Point(41, 42);
+            button1.Margin = new Padding(4);
             button1.Name = "button1";
-            button1.Size = new Size(113, 52);
+            button1.Size = new Size(133, 39);
             button1.TabIndex = 61;
-            button1.Text = "Regresar";
+            button1.Text = "REGRESAR";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
             // button2
             // 
-            button2.Location = new Point(885, 154);
+            button2.Cursor = Cursors.Hand;
+            button2.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            button2.Location = new Point(590, 236);
+            button2.Margin = new Padding(4);
             button2.Name = "button2";
-            button2.Size = new Size(300, 29);
+            button2.Size = new Size(109, 38);
             button2.TabIndex = 62;
-            button2.Text = "Aceptar";
+            button2.Text = "ACEPTAR";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
             // txtSumaCPU
             // 
-            txtSumaCPU.Location = new Point(257, 539);
+            txtSumaCPU.BorderStyle = BorderStyle.FixedSingle;
+            txtSumaCPU.Font = new Font("Segoe UI", 11F);
+            txtSumaCPU.Location = new Point(250, 666);
+            txtSumaCPU.Margin = new Padding(4);
             txtSumaCPU.Name = "txtSumaCPU";
-            txtSumaCPU.Size = new Size(149, 27);
+            txtSumaCPU.Size = new Size(185, 37);
             txtSumaCPU.TabIndex = 63;
             // 
             // txtPromRetorno
             // 
-            txtPromRetorno.Location = new Point(730, 535);
+            txtPromRetorno.BorderStyle = BorderStyle.FixedSingle;
+            txtPromRetorno.Font = new Font("Segoe UI", 11F);
+            txtPromRetorno.Location = new Point(841, 661);
+            txtPromRetorno.Margin = new Padding(4);
             txtPromRetorno.Name = "txtPromRetorno";
-            txtPromRetorno.Size = new Size(149, 27);
+            txtPromRetorno.Size = new Size(185, 37);
             txtPromRetorno.TabIndex = 64;
             // 
             // txtPromEspera
             // 
-            txtPromEspera.Location = new Point(885, 535);
+            txtPromEspera.BorderStyle = BorderStyle.FixedSingle;
+            txtPromEspera.Font = new Font("Segoe UI", 11F);
+            txtPromEspera.Location = new Point(1035, 661);
+            txtPromEspera.Margin = new Padding(4);
             txtPromEspera.Name = "txtPromEspera";
-            txtPromEspera.Size = new Size(147, 27);
+            txtPromEspera.Size = new Size(183, 37);
             txtPromEspera.TabIndex = 65;
             // 
             // label4
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label4.Location = new Point(149, 543);
+            label4.Location = new Point(169, 669);
             label4.Margin = new Padding(2, 0, 2, 0);
             label4.Name = "label4";
-            label4.Size = new Size(62, 23);
+            label4.Size = new Size(73, 28);
             label4.TabIndex = 67;
             label4.Text = "SUMA:";
             // 
@@ -273,20 +313,23 @@
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label8.Location = new Point(583, 539);
+            label8.Location = new Point(698, 664);
             label8.Margin = new Padding(2, 0, 2, 0);
             label8.Name = "label8";
-            label8.Size = new Size(112, 23);
+            label8.Size = new Size(130, 28);
             label8.TabIndex = 66;
             label8.Text = "PROMEDIOS:";
             // 
             // button3
             // 
-            button3.Location = new Point(885, 189);
+            button3.Cursor = Cursors.Hand;
+            button3.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            button3.Location = new Point(590, 715);
+            button3.Margin = new Padding(4);
             button3.Name = "button3";
-            button3.Size = new Size(300, 29);
+            button3.Size = new Size(112, 38);
             button3.TabIndex = 68;
-            button3.Text = "limpiar";
+            button3.Text = "LIMPIAR";
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 
@@ -294,10 +337,10 @@
             // 
             label12.AutoSize = true;
             label12.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label12.Location = new Point(102, 611);
+            label12.Location = new Point(57, 768);
             label12.Margin = new Padding(2, 0, 2, 0);
             label12.Name = "label12";
-            label12.Size = new Size(141, 23);
+            label12.Size = new Size(169, 28);
             label12.TabIndex = 70;
             label12.Text = "TABLA DE COLAS";
             label12.TextAlign = ContentAlignment.TopCenter;
@@ -305,17 +348,18 @@
             // dataGridView1
             // 
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(102, 637);
+            dataGridView1.Location = new Point(57, 800);
+            dataGridView1.Margin = new Padding(4);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(618, 189);
+            dataGridView1.Size = new Size(772, 236);
             dataGridView1.TabIndex = 72;
             // 
-            // Form2
+            // SRTF
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1244, 855);
+            ClientSize = new Size(1273, 1069);
             Controls.Add(dataGridView1);
             Controls.Add(label12);
             Controls.Add(button3);
@@ -342,8 +386,11 @@
             Controls.Add(label5);
             Controls.Add(label2);
             Controls.Add(label1);
-            Name = "Form2";
+            Margin = new Padding(4);
+            Name = "SRTF";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Form2";
+            FormClosing += SRTF_FormClosing;
             Load += Form2_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
