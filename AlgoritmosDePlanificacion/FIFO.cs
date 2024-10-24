@@ -8,10 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Windows.Forms.DataVisualization.Charting;
-
-
+//
+//
 namespace AlgoritmosDePlanificacion
 {
     public partial class FIFO : Form
@@ -20,14 +18,16 @@ namespace AlgoritmosDePlanificacion
         {
             InitializeComponent();
         }
-
+        //
         int dato;
-        string nombre;
+
         int[] CPU;
         int[] llegada;
         int sumaCPU;
         double retorno;
         double espera;
+        int[] finalizacion; // Finalización de cada proceso
+        int[] tiemposInicio; // Tiempos de inicio de cada proceso
 
         public void AceptarDatos()
         {
@@ -36,12 +36,13 @@ namespace AlgoritmosDePlanificacion
                 dato = int.Parse(txtNoProcesos.Text);
                 CPU = new int[dato];
                 llegada = new int[dato];
+                finalizacion = new int[dato];
+                tiemposInicio = new int[dato]; // Inicializa la lista para tiempos de inicio
 
                 for (int i = 0; i < dato; i++)
                 {
-                    int proceso;
-                    proceso = i + 1;
-                    nombre = Interaction.InputBox("Ingrese el nombre del Proceso " + proceso);
+                    int proceso = i + 1;
+                    string nombre = Interaction.InputBox("Ingrese el nombre del Proceso " + proceso);
                     if (!string.IsNullOrWhiteSpace(nombre))
                     {
                         lbProcesos.Items.Add(nombre);
@@ -55,101 +56,106 @@ namespace AlgoritmosDePlanificacion
 
                     sumaCPU += CPU[i];
 
-                    //Calcular tiempo de Finalizacion
-                    double Finalizacion = sumaCPU;
-                    lbFinalizacion.Items.Add(Finalizacion);
+                    // Calcular tiempo de finalización
+                    if (i == 0)
+                    {
+                        tiemposInicio[i] = llegada[i]; // El primer proceso comienza en su tiempo de llegada
+                    }
+                    else
+                    {
+                        tiemposInicio[i] = Math.Max(finalizacion[i - 1], llegada[i]); // Comienza cuando termina el anterior o en su llegada
+                    }
+                    finalizacion[i] = tiemposInicio[i] + CPU[i];
 
-                    //Calcular tiempo de Retorno
-                    double Retorno = Finalizacion - llegada[i];
+                    // Añadir finalización
+                    lbFinalizacion.Items.Add(finalizacion[i]);
+
+                    // Calcular tiempo de retorno y espera
+                    double Retorno = finalizacion[i] - llegada[i];
                     lbRetorno.Items.Add(Retorno);
                     retorno += Retorno;
-
-                    //Calcular tiempo de Espera
+                    //
                     double Espera = Retorno - CPU[i];
                     lbEspera.Items.Add(Espera);
                     espera += Espera;
 
-                    //Suma
+                    // Suma de CPU
                     txtSumaCPU.Text = sumaCPU.ToString();
 
-                    //Promedio Retorno
-                    double PromRetorno = retorno / dato;
-                    txtPromRetorno.Text = Math.Round(PromRetorno, 2).ToString();
-
-                    //Promedio Espera
-                    double PromEspera = espera / dato;
-                    txtPromEspera.Text = Math.Round(PromEspera, 2).ToString();
-
+                    // Promedios
+                    txtPromRetorno.Text = (retorno / dato).ToString("F2");
+                    txtPromEspera.Text = (espera / dato).ToString("F2");
                 }
 
+                // Llamar a la función para dibujar la gráfica
+                DibujarGrafica();
+
             }
+            //
             catch
             {
-                txtNoProcesos.Text = "";
-                MessageBox.Show("Ingrese un dato válido", "Error Inesperado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                lbProcesos.Items.Clear();
-                lbCPU.Items.Clear();
-                lbLlegada.Items.Clear();
-                lbFinalizacion.Items.Clear();
-                lbRetorno.Items.Clear();
-                lbEspera.Items.Clear();
+                //
             }
         }
 
-        private void CalcularTiempos(out int[] tiemposInicio, out int[] tiemposFin)
+        // Función para dibujar la gráfica de Gantt
+        private void DibujarGrafica()
         {
-            tiemposInicio = new int[dato];
-            tiemposFin = new int[dato];
+            // Limpiar el panel
+            panelGrafico.Invalidate();
+            panelGrafico.Update();
 
-            for (int i = 0; i < dato; i++)
+            using (Graphics g = panelGrafico.CreateGraphics())
             {
-                if (i == 0)
+                int anchoBarra = 40;  // Ancho de cada barra
+                int alturaBarra = 30; // Altura de cada barra
+                int offsetY = 50;     // Offset inicial en Y
+                int espacioEntreFilas = 30; // Espacio entre filas
+
+                Color[] colores = { Color.Green, Color.Gray, Color.Purple, Color.Orange, Color.Blue };
+
+                // Lista de procesos (puedes adaptarla a tu estructura de datos si tienes otra)
+                var procesos = CPU.Select((rafaga, i) => new
                 {
-                    tiemposInicio[i] = llegada[i]; // El primer proceso comienza en su tiempo de llegada
-                }
-                else
+                    Proceso = "P" + (i + 1),
+                    RafagaCPU = rafaga,
+                    TiempoInicio = tiemposInicio[i],
+                    TiempoFinalizacion = finalizacion[i],
+                    Color = colores[i % colores.Length]
+                }).ToList();
+
+                // Dibujar etiquetas de tiempo
+                int tiempoTotal = procesos.Max(p => p.TiempoFinalizacion);
+                for (int i = 0; i <= tiempoTotal; i++)
                 {
-                    tiemposInicio[i] = Math.Max(tiemposFin[i - 1], llegada[i]); // Comienza cuando termina el anterior o en su llegada
+                    g.DrawString(i.ToString(), new Font("Arial", 8), Brushes.Black, i * anchoBarra, offsetY - 30);
                 }
 
-                tiemposFin[i] = tiemposInicio[i] + CPU[i]; // El tiempo de fin es inicio más la ráfaga
+                // Dibujar las barras
+                for (int i = 0; i < procesos.Count; i++)
+                {
+                    Rectangle rect = new Rectangle(procesos[i].TiempoInicio * anchoBarra, offsetY + (i * espacioEntreFilas), procesos[i].RafagaCPU * anchoBarra, alturaBarra);
+
+                    // Dibujar la barra
+                    g.FillRectangle(new SolidBrush(procesos[i].Color), rect);
+                    g.DrawRectangle(Pens.Black, rect); // Dibujar el borde
+
+                    // Dibujar el nombre del proceso
+                    g.DrawString(procesos[i].Proceso, new Font("Arial", 10), Brushes.Black, procesos[i].TiempoInicio * anchoBarra - 40, offsetY + (i * espacioEntreFilas));
+
+                    // Dibujar líneas en medio de cada proceso
+                    for (int j = procesos[i].TiempoInicio; j < procesos[i].TiempoFinalizacion; j++)
+                    {
+                        int lineaX = j * anchoBarra;
+                        g.DrawLine(Pens.Red, lineaX, offsetY + (i * espacioEntreFilas), lineaX, offsetY + (i * espacioEntreFilas) + alturaBarra);
+                    }
+                }
             }
+            //
         }
-
-        private void MostrarGrafica()
-        {
-            chart1.Series.Clear();
-            chart1.ChartAreas.Clear();
-
-            ChartArea chartArea = new ChartArea();
-            chart1.ChartAreas.Add(chartArea);
-
-            // Calcular tiempos de inicio y fin
-            CalcularTiempos(out int[] tiemposInicio, out int[] tiemposFin);
-
-            // Crear una nueva serie de tipo Bar (horizontal)
-            Series series = new Series
-            {
-                Name = "Procesos",
-                Color = System.Drawing.Color.Blue,
-                IsValueShownAsLabel = true,
-                ChartType = SeriesChartType.Bar
-            };
-
-            // Agregar datos a la serie para el gráfico de Gantt
-            for (int i = 0; i < dato; i++)
-            {
-                series.Points.AddXY("Proceso " + (i + 1), tiemposFin[i] - tiemposInicio[i]); // La longitud de la barra
-            }
-
-            // Agregar la serie al gráfico
-            chart1.Series.Add(series);
-
-            // Configurar los valores de los ejes
-            chart1.ChartAreas[0].AxisX.Minimum = 0; // Ajusta el mínimo del eje X
-            chart1.ChartAreas[0].AxisX.Maximum = tiemposFin[^1]; // Máximo del eje X al tiempo final del último proceso
-        }
-
+        //
+        //
+        //
         private void btnRegresar_Click(object sender, EventArgs e)
         {
             //Regresar al sub Menú
@@ -157,12 +163,7 @@ namespace AlgoritmosDePlanificacion
             this.Hide();
             nuevoForm.Show();
         }
-
-        private void btnAceptar_Click(object sender, EventArgs e)
-        {
-            AceptarDatos();
-        }
-
+        //
         private void FIFO_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
@@ -176,6 +177,18 @@ namespace AlgoritmosDePlanificacion
             this.Hide();
             FIFO reset = new FIFO();
             reset.Show();
+        }
+
+        private void btnAceptar_Click(object sender, EventArgs e)
+        {
+            // Verificar si el campo de texto de número de procesos está vacío o es cero
+            if (string.IsNullOrWhiteSpace(txtNoProcesos.Text) || int.Parse(txtNoProcesos.Text) <= 0)
+            {
+                MessageBox.Show("Por favor, ingrese un número válido de procesos.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return; // Salir del método si no hay datos
+            }
+
+            AceptarDatos(); // Llamada a la función para procesar los datos
         }
     }
 }

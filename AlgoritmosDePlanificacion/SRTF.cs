@@ -20,27 +20,30 @@ namespace AlgoritmosDePlanificacion
         {
             InitializeComponent();
         }
-        int dato;
-        string nombre;
-        int[] CPU;
-        int[] llegada;
-        int sumaCPU;
-        double retorno;
-        double espera;
+        // Variables globales
+        List<string> nombresProcesos;
+        List<int> rafagaCPU;
+        List<int> tiempoLlegada;
+        List<int> tiempoRestante;
+        List<int> ordenLlegada; // Para mantener el orden original
+        List<int> finalizacion; // Hacerla variable global
+        int tiempoActual = 0;
 
+        // Método para aceptar datos del usuario
         public void AceptarDatos()
         {
             try
             {
                 int cantidadProcesos = int.Parse(txtNoProcesos.Text);
-                List<string> nombresProcesos = new List<string>();
-                List<int> rafagaCPU = new List<int>();
-                List<int> tiempoLlegada = new List<int>();
-                List<int> tiempoRestante = new List<int>();
+                nombresProcesos = new List<string>();
+                rafagaCPU = new List<int>();
+                tiempoLlegada = new List<int>();
+                tiempoRestante = new List<int>();
+                ordenLlegada = new List<int>(); // Lista para almacenar el orden original de llegada
 
                 for (int i = 0; i < cantidadProcesos; i++)
                 {
-                    // Pedir nombre del proceso
+                    // Pedir el nombre del proceso
                     string nombreProceso = Interaction.InputBox("Ingrese el nombre del Proceso " + (i + 1));
                     nombresProcesos.Add(nombreProceso);
                     lbProcesos.Items.Add(nombreProceso);
@@ -54,126 +57,154 @@ namespace AlgoritmosDePlanificacion
                     // Pedir tiempo de llegada
                     int llegada = int.Parse(Interaction.InputBox("Ingrese el tiempo de llegada del Proceso " + (i + 1)));
                     tiempoLlegada.Add(llegada);
+                    ordenLlegada.Add(i); // Mantener el índice del proceso original
                     lbLlegada.Items.Add(llegada);
                 }
 
-                // Ahora que tenemos los datos, pasamos a simular el algoritmo SRTF
-                SimularSRTF(nombresProcesos, rafagaCPU, tiempoLlegada, tiempoRestante);
+                // Pasar los datos al simulador del algoritmo SRTF
+                SimularSRTF();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Ocurrió un error: " + ex.Message);
             }
         }
+        // Agregar una lista para almacenar el historial de ejecución de procesos
+        List<(int tiempo, int proceso)> historialEjecucion = new List<(int, int)>();
 
-        public void SimularSRTF(List<string> nombres, List<int> cpu, List<int> llegada, List<int> tiempoRestante)
+        public void SimularSRTF()
         {
-            int tiempoActual = 0;
-            List<int> finalizacion = new List<int>(new int[nombres.Count]);
-            List<int> retorno = new List<int>(new int[nombres.Count]);
-            List<int> espera = new List<int>(new int[nombres.Count]);
+            finalizacion = new List<int>(new int[nombresProcesos.Count]); // Inicializar aquí
+            List<int> retorno = new List<int>(new int[nombresProcesos.Count]);
+            List<int> espera = new List<int>(new int[nombresProcesos.Count]);
             int procesosTerminados = 0;
+            int procesoEjecutando = -1;
 
-            // Inicializar el DataGridView antes de la simulación
-            InicializarDataGridView();
-
-            while (procesosTerminados < nombres.Count)
+            while (procesosTerminados < nombresProcesos.Count)
             {
-                // Buscar el proceso con el menor tiempo restante que haya llegado
-                int procesoEjecutando = -1;
+                int procesoMenorTiempo = -1;
                 int menorTiempo = int.MaxValue;
 
-                for (int i = 0; i < nombres.Count; i++)
+                for (int i = 0; i < nombresProcesos.Count; i++)
                 {
-                    if (llegada[i] <= tiempoActual && tiempoRestante[i] > 0 && tiempoRestante[i] < menorTiempo)
+                    if (tiempoLlegada[i] <= tiempoActual && tiempoRestante[i] > 0 && tiempoRestante[i] < menorTiempo)
                     {
                         menorTiempo = tiempoRestante[i];
-                        procesoEjecutando = i;
+                        procesoMenorTiempo = i;
                     }
                 }
 
-                if (procesoEjecutando != -1)
+                if (procesoMenorTiempo != -1)
                 {
+                    if (procesoEjecutando != procesoMenorTiempo)
+                    {
+                        procesoEjecutando = procesoMenorTiempo;
+                    }
+
                     // Ejecutar el proceso por una unidad de tiempo
                     tiempoRestante[procesoEjecutando]--;
+                    historialEjecucion.Add((tiempoActual, procesoEjecutando)); // Registrar el tiempo y el proceso
                     tiempoActual++;
-
-                    // Actualizar el DataGridView en cada interrupción o ejecución
-                    ActualizarDataGridView(procesoEjecutando, nombres[procesoEjecutando], cpu[procesoEjecutando], tiempoRestante[procesoEjecutando], llegada[procesoEjecutando], "En ejecución");
-
-                    // Si el proceso ha terminado
+                    //
                     if (tiempoRestante[procesoEjecutando] == 0)
                     {
                         finalizacion[procesoEjecutando] = tiempoActual;
-                        retorno[procesoEjecutando] = finalizacion[procesoEjecutando] - llegada[procesoEjecutando];
-                        espera[procesoEjecutando] = retorno[procesoEjecutando] - cpu[procesoEjecutando];
+                        retorno[procesoEjecutando] = finalizacion[procesoEjecutando] - tiempoLlegada[procesoEjecutando];
+                        espera[procesoEjecutando] = retorno[procesoEjecutando] - rafagaCPU[procesoEjecutando];
                         procesosTerminados++;
-
-                        // Mostrar los resultados en las listas visuales
-                        lbFinalizacion.Items.Add(finalizacion[procesoEjecutando]);
-                        lbRetorno.Items.Add(retorno[procesoEjecutando]);
-                        lbEspera.Items.Add(espera[procesoEjecutando]);
-
-                        // Actualizar el DataGridView al finalizar el proceso
-                        ActualizarDataGridView(procesoEjecutando, nombres[procesoEjecutando], cpu[procesoEjecutando], 0, llegada[procesoEjecutando], "Finalizado");
+                        //
                     }
+                    //
                 }
                 else
                 {
-                    // Si no hay procesos disponibles, avanzar el tiempo
+                    //
                     tiempoActual++;
                 }
+                //
             }
 
-            // Mostrar los resultados finales en las listas visuales
+            // Ordenar los resultados en función del orden de llegada
             MostrarResultados(finalizacion, retorno, espera);
         }
 
-
-        private void ActualizarDataGridView(int indice, string nombreProceso, int cpu, int tiempoRestante, int llegada, string estado)
+        private void DibujarGrafica()
         {
-            dataGridView1.Rows.Add(new object[] {
-        nombreProceso,        // Nombre del proceso
-        cpu,                  // Tiempo de CPU asignado
-        tiempoRestante,       // Tiempo restante
-        llegada,              // Tiempo de llegada
-        estado                // Estado actual del proceso (En ejecución, Finalizado, etc.)
-        });
+            // Limpiar el panel
+            panelGrafico.Invalidate();
+            panelGrafico.Update();
+
+            using (Graphics g = panelGrafico.CreateGraphics())
+            {
+                // Variables para la posición inicial en el eje X
+                int anchoBarra = 40; // Ancho de cada barra 
+                int alturaBarra = 30; // Altura de cada barra
+                int offsetY = 50; // Offset Y inicial para el primer proceso
+                int espacioEntreFilas = 30; // Espacio entre cada fila de procesos
+
+                // Colores para cada proceso
+                Color[] colores = { Color.Green, Color.Gray, Color.Purple, Color.Orange, Color.Blue };
+
+                // Etiquetas de tiempo en el eje X
+                for (int i = 0; i <= tiempoActual; i++)
+                {
+                    g.DrawString(i.ToString(), new Font("Arial", 8), Brushes.Black, i * anchoBarra, offsetY - 30);
+                }
+
+                // Dibujar la gráfica basándose en el historial de ejecución
+                for (int i = 0; i < historialEjecucion.Count; i++)
+                {
+                    var (tiempo, proceso) = historialEjecucion[i];
+                    // Determinar el tiempo de inicio y el tiempo de fin del proceso
+                    int tiempoFin = (i + 1 < historialEjecucion.Count) ? historialEjecucion[i + 1].tiempo : tiempoActual;
+
+                    // Definir el rectángulo para la barra en su propia fila
+                    Rectangle rect = new Rectangle(tiempo * anchoBarra, offsetY + (proceso * espacioEntreFilas), (tiempoFin - tiempo) * anchoBarra, alturaBarra);
+
+                    // Dibujar la barra con el color correspondiente
+                    g.FillRectangle(new SolidBrush(colores[proceso % colores.Length]), rect);
+
+                    // Dibujar el borde de la barra
+                    g.DrawRectangle(Pens.Black, rect);
+
+
+                }
+
+
+            }
         }
 
-
+        //
+        // Método para mostrar resultados finales
         private void MostrarResultados(List<int> finalizacion, List<int> retorno, List<int> espera)
         {
+            // Limpiar listas visuales antes de agregar datos
+            lbFinalizacion.Items.Clear();
+            lbRetorno.Items.Clear();
+            lbEspera.Items.Clear();
+
+            // Mostrar resultados en el orden en que llegaron los procesos
+            for (int i = 0; i < ordenLlegada.Count; i++)
+            {
+                int idx = ordenLlegada[i]; // Índice del proceso original
+                lbFinalizacion.Items.Add(finalizacion[idx]);
+                lbRetorno.Items.Add(retorno[idx]);
+                lbEspera.Items.Add(espera[idx]);
+            }
+            //
             // Calcular sumas y promedios
             int sumaFinalizacion = finalizacion.Sum();
             int sumaRetorno = retorno.Sum();
             int sumaEspera = espera.Sum();
 
             txtSumaCPU.Text = sumaFinalizacion.ToString();
-            txtPromRetorno.Text = (sumaRetorno / finalizacion.Count).ToString();
-            txtPromEspera.Text = (sumaEspera / finalizacion.Count).ToString();
+            txtPromRetorno.Text = (sumaRetorno / finalizacion.Count).ToString("F2");
+            txtPromEspera.Text = (sumaEspera / finalizacion.Count).ToString("F2");
+
+            // Llamar a la función para dibujar la gráfica
+            DibujarGrafica();
         }
-
-        private void InicializarDataGridView()
-        {
-            dataGridView1.Rows.Clear();  // Limpia las filas anteriores si es necesario
-            dataGridView1.Columns.Clear();  // Limpia las columnas anteriores si es necesario
-
-            // Añadir las columnas al DataGridView
-            dataGridView1.Columns.Add("Proceso", "Proceso");
-            dataGridView1.Columns.Add("CPU", "CPU");
-            dataGridView1.Columns.Add("Tiempo Restante", "Tiempo Restante");
-            dataGridView1.Columns.Add("Llegada", "Tiempo de Llegada");
-            dataGridView1.Columns.Add("Estado", "Estado");
-        }
-
-
-        private void ActualizarDataGridView(int proceso, int tiempoRestante, int tiempoLlegada, int tiempoFinalizacion, string estado)
-        {
-            dataGridView1.Rows.Add("Proceso " + proceso, tiempoRestante, tiempoLlegada, tiempoFinalizacion, estado);
-        }
-
-
+        //
         private void button1_Click(object sender, EventArgs e)
         { //Regresar al sub Menú
             SubMenuExpropiativos nuevoForm = new SubMenuExpropiativos();
@@ -186,11 +217,31 @@ namespace AlgoritmosDePlanificacion
 
         private void button2_Click(object sender, EventArgs e)
         {
-            AceptarDatos();
+            try
+            {
+                int cantidadProcesos = int.Parse(txtNoProcesos.Text);
+
+                // Validación para asegurar que la cantidad de procesos sea mayor que 0
+                if (cantidadProcesos <= 0)
+                {
+                    MessageBox.Show("Por favor, ingrese un número válido de procesos mayor a 0.", "Datos no válidos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return; // Salir del método si la validación falla
+                }
+
+                // Si la validación es correcta, proceder a aceptar los datos
+                AceptarDatos();
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Por favor, ingrese un número entero válido para la cantidad de procesos.", "Formato no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ocurrió un error: " + ex.Message);
+            }
         }
 
-
-
+        //
         private void button3_Click(object sender, EventArgs e)
         {
             this.Hide();

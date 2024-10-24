@@ -76,48 +76,10 @@ namespace AlgoritmosDePlanificacion
             }
         }
 
-
-
-        // Método para limpiar todos los controles
-        private void LimpiarTodo()
-        {
-            // Limpiar los ListBox
-            lbProcesos.Items.Clear();
-            lbCPU.Items.Clear();
-            lbLlegada.Items.Clear();
-            lbFinalizacion.Items.Clear();
-            lbRetorno.Items.Clear();
-            lbEspera.Items.Clear();
-
-            // Limpiar los TextBox
-            txtNoProcesos.Clear();
-            txtSumaCPU.Clear();
-            txtPromRetorno.Clear();
-            txtPromEspera.Clear();
-
-            // Restablecer las variables
-            CPU = null;
-            llegada = null;
-            finalizacion = null;
-            procesado = null;
-            tiempoActual = 0;
-            sumaCPU = 0;
-            retorno = 0;
-            espera = 0;
-
-            // Limpiar el panel gráfico
-            panelGrafico.Invalidate();
-            panelGrafico.Update();
-        }
-
-        // Asignar el método LimpiarTodo al evento Click del botón "Limpiar"
-        private void btnLimpiar_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            Form3 reset = new Form3();
-            reset.Show();
-        }
-
+            //this.Hide();
+            //Form3 reset = new Form3();
+            //reset.Show();
+//
         // Modificar esta función para llenar las listas con el orden original después de calcular
         private void LlenarListasFinal(int dato)
         {
@@ -185,52 +147,62 @@ namespace AlgoritmosDePlanificacion
             double PromEspera = espera / dato;
             txtPromEspera.Text = Math.Round(PromEspera, 2).ToString();
         }
-
-
+        //
         private void DibujarGrafica()
         {
             // Limpiar el panel
             panelGrafico.Invalidate();
             panelGrafico.Update();
-
-            // Obtener el objeto Graphics del panel
+            //
             using (Graphics g = panelGrafico.CreateGraphics())
             {
-                // Variables para la posición inicial en el eje X
-                int anchoBarra = 40; // Ancho de cada barra
-                int alturaBarra = 30; // Altura de cada barra
-                int offsetY = 50; // Offset Y para el primer proceso
-                int tiempoInicio = 0; // Variable para manejar el tiempo de inicio de cada proceso
-
-                // Colores para cada proceso
+                int anchoBarra = 40;  // Ancho de cada barra en el gráfico
+                int alturaBarra = 30; // Altura de cada barra en el gráfico
+                int offsetY = 50;     // Desplazamiento inicial en el eje Y
+                int espacioEntreFilas = 40; // Espacio entre las filas de los procesos
                 Color[] colores = { Color.Green, Color.Gray, Color.Purple, Color.Orange, Color.Blue };
 
-                for (int i = 0; i < CPU.Length; i++)
+                // Crear una lista de procesos con su información relevante (inicio, finalización, etc.)
+                var procesos = CPU.Select((rafaga, i) => new
                 {
-                    // Calcular el tiempo de inicio del proceso
-                    tiempoInicio = finalizacion[i] - CPU[i];
+                    Proceso = "P" + (i + 1),                // Nombre del proceso
+                    RafagaCPU = rafaga,                     // Ráfaga de CPU del proceso
+                    TiempoInicio = finalizacion[i] - rafaga, // Tiempo de inicio del proceso
+                    TiempoFinalizacion = finalizacion[i],    // Tiempo de finalización
+                    Color = colores[i % colores.Length]     // Color asignado al proceso
+                }).ToList();
 
-                    // Definir el rectángulo para la barra
-                    Rectangle rect = new Rectangle(tiempoInicio * anchoBarra, offsetY, CPU[i] * anchoBarra, alturaBarra);
-
-                    // Elegir el color para la barra
-                    g.FillRectangle(new SolidBrush(colores[i % colores.Length]), rect);
-
-                    // Dibujar el borde de la barra
-                    g.DrawRectangle(Pens.Black, rect);
-
-                    // Etiqueta para el proceso
-                    g.DrawString(lbProcesos.Items[i].ToString(), new Font("Arial", 10), Brushes.Black,
-                                 tiempoInicio * anchoBarra, offsetY - 20);
+                // Determinar el tiempo total de la simulación para colocar las etiquetas de tiempo en el eje X
+                int tiempoTotal = procesos.Max(p => p.TiempoFinalizacion);
+                for (int i = 0; i <= tiempoTotal; i++)
+                {
+                    g.DrawString(i.ToString(), new Font("Arial", 8), Brushes.Black, i * anchoBarra, offsetY - 30);
                 }
 
-                // Etiquetas de tiempo en el eje X
-                for (int i = 0; i <= tiempoActual; i++)
+                // Dibujar las barras de los procesos
+                for (int i = 0; i < procesos.Count; i++)
                 {
-                    g.DrawString(i.ToString(), new Font("Arial", 8), Brushes.Black, i * anchoBarra, offsetY + alturaBarra + 5);
+                    // Calcular la posición y tamaño de la barra para cada proceso
+                    Rectangle rect = new Rectangle(procesos[i].TiempoInicio * anchoBarra, offsetY + (i * espacioEntreFilas), procesos[i].RafagaCPU * anchoBarra, alturaBarra);
+
+                    // Dibujar la barra del proceso (llenado con color y borde)
+                    g.FillRectangle(new SolidBrush(procesos[i].Color), rect);
+                    g.DrawRectangle(Pens.Black, rect);
+
+                    // Dibujar el nombre del proceso sobre la barra
+                    g.DrawString(procesos[i].Proceso, new Font("Arial", 10), Brushes.Black, procesos[i].TiempoInicio * anchoBarra - 40, offsetY + (i * espacioEntreFilas));
+
+                    // ** Inicio de la sección añadida para dibujar líneas en medio de cada proceso **
+                    for (int j = procesos[i].TiempoInicio; j < procesos[i].TiempoFinalizacion; j++)
+                    {
+                        int lineaX = j * anchoBarra;
+                        g.DrawLine(Pens.Red, lineaX, offsetY + (i * espacioEntreFilas), lineaX, offsetY + (i * espacioEntreFilas) + alturaBarra);
+                    }
+                    // ** Fin de la sección añadida **
                 }
             }
         }
+
 
 
         // Función para encontrar el índice del proceso con la menor ráfaga de CPU
@@ -259,16 +231,19 @@ namespace AlgoritmosDePlanificacion
             this.Hide();
             nuevoForm.Show();
         }
-
-        private void Form3_Load(object sender, EventArgs e)
-        {
-
-        }
-
+        //
         private void button2_Click(object sender, EventArgs e)
         {
+            // Verificar si el campo de texto de número de procesos está vacío o es cero
+            if (string.IsNullOrWhiteSpace(txtNoProcesos.Text) || int.Parse(txtNoProcesos.Text) <= 0)
+            {
+                MessageBox.Show("Por favor, ingrese un número válido de procesos.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return; // Salir del método si no hay datos
+            }
+            //
             AceptarDatos(); // Llamada a la función para procesar los datos
         }
+
 
         private void button2_Click_1(object sender, EventArgs e)
         {

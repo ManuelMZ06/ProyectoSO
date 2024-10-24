@@ -30,59 +30,28 @@ namespace AlgoritmosDePlanificacion
         {
 
         }
-
-        private void dataGridViewProcesos_KeyDown(object sender, KeyEventArgs e)
-        {
-            // Verificar si se presionó la tecla Enter
-            if (e.KeyCode == Keys.Enter)
-            {
-                // Evitar que la tecla Enter haga el salto a la siguiente celda
-                e.Handled = true;
-
-                // Obtener la posición de la celda seleccionada actualmente
-                int currentColumn = dataGridView1.CurrentCell.ColumnIndex;
-                int currentRow = dataGridView1.CurrentCell.RowIndex;
-
-                // Verificar si estamos en la última columna de la última fila existente
-                if (currentColumn == dataGridView1.Columns.Count - 1 && currentRow == dataGridView1.Rows.Count - 1)
-                {
-                    // Agregar una nueva fila
-                    dataGridView1.Rows.Add();
-
-                    // Mover el foco a la primera celda de la nueva fila
-                    dataGridView1.CurrentCell = dataGridView1.Rows[currentRow + 1].Cells[0];
-                }
-                else
-                {
-                    // Si no estamos en la última columna, mover el foco a la siguiente celda
-                    dataGridView1.CurrentCell = dataGridView1.Rows[currentRow].Cells[currentColumn + 1];
-                }
-            }
-        }
-
+        //
         private void button1_Click(object sender, EventArgs e)
         {
-            // Verificar si el DataGridView está vacío
-            if (dataGridView1.Rows.Count == 0 || (dataGridView1.Rows.Count == 1 && dataGridView1.Rows[0].IsNewRow))
+            // Verificar si hay datos en el DataGridView
+            if (dataGridView1.Rows.Count == 0 ||
+                dataGridView1.Rows.Cast<DataGridViewRow>().All(row => row.IsNewRow))
             {
-                MessageBox.Show("El DataGrid está vacío. Por favor, agrega procesos antes de calcular.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return; // Salir del método si está vacío
+                MessageBox.Show("No hay datos para calcular.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return; // Salir del método si no hay datos
             }
 
             CalcularAlgoritmoPrioridad();
-            DibujarGrafico();
+            //
         }
-
-
-
+        //
         private void button2_Click(object sender, EventArgs e)
         {
             this.Hide();
             PRIORIDAD reset = new PRIORIDAD();
             reset.Show();
         }
-
-
+        //
         private void CalcularAlgoritmoPrioridad()
         {
             int tiempoActual = 0; // Inicializar el tiempo actual en 0
@@ -149,139 +118,68 @@ namespace AlgoritmosDePlanificacion
                 }
             }
 
+            // Llamar la función para dibujar la gráfica
+            DibujarGrafica();
+
             MessageBox.Show("Cálculos realizados correctamente.", "Éxito");
         }
-
-        private void LimpiarDataGridView()
+        private void DibujarGrafica()
         {
-            // Limpiar todas las filas del DataGridView
-            dataGridView1.Rows.Clear();
+            // Limpiar el panel
+            panelGrafico.Invalidate();
+            panelGrafico.Update();
 
-            // (Opcional) Puedes también reiniciar cualquier otro estado que desees, como el tiempo actual
-            // tiempoActual = 0; // Si tienes una variable para el tiempo actual, reiníciala aquí
-
-            MessageBox.Show("Datos limpiados correctamente.", "Éxito");
-        }
-
-        private void DibujarGrafico()
-        {
-            chart1.Series.Clear();
-            chart1.ChartAreas.Clear();
-
-            // Crear y configurar un nuevo área de gráfico
-            ChartArea chartArea = new ChartArea();
-            chart1.ChartAreas.Add(chartArea);
-
-            // Inicializar el tiempo actual
-            int tiempoActual = 0;
-            List<int> tiemposInicio = new List<int>();
-            List<int> tiemposFin = new List<int>();
-
-            // Filtrar y ordenar los procesos
-            var procesos = dataGridView1.Rows
-                .Cast<DataGridViewRow>()
-                .Where(row => !row.IsNewRow &&
-                              row.Cells["Prioridad1"].Value != null &&
-                              row.Cells["RAFAGA"].Value != null &&
-                              row.Cells["TIEMPODELLEGADA"].Value != null)
-                .Select(row => new
-                {
-                    Prioridad = int.Parse(row.Cells["Prioridad1"].Value.ToString()),
-                    RafagaCPU = int.Parse(row.Cells["RAFAGA"].Value.ToString()),
-                    TiempoLlegada = int.Parse(row.Cells["TIEMPODELLEGADA"].Value.ToString()),
-                    Row = row
-                })
-                .OrderBy(p => p.TiempoLlegada)
-                .ThenBy(p => p.Prioridad)
-                .ToList();
-
-            // Asegurarse de que hay procesos para graficar
-            if (!procesos.Any())
+            using (Graphics g = panelGrafico.CreateGraphics())
             {
-                MessageBox.Show("No hay procesos para graficar.");
-                return;
-            }
+                int anchoBarra = 40;
+                int alturaBarra = 30;
+                int offsetY = 50;
+                int espacioEntreFilas = 30;
+                Color[] colores = { Color.Green, Color.Gray, Color.Purple, Color.Orange, Color.Blue };
 
-            // Procesar cada proceso para calcular tiempos de inicio y fin
-            foreach (var proceso in procesos)
-            {
-                // Si el tiempo actual es menor que el tiempo de llegada del proceso,
-                // el sistema debe esperar hasta que llegue el proceso
-                if (tiempoActual < proceso.TiempoLlegada)
+                // Obtener los procesos desde el DataGridView
+                var procesos = dataGridView1.Rows
+                    .Cast<DataGridViewRow>()
+                    .Where(row => !row.IsNewRow && row.Cells["RAFAGA"].Value != null && row.Cells["TIEMPODEFINALIZACION"].Value != null)
+                    .Select((row, i) => new
+                    {
+                        Proceso = "P" + (i + 1),
+                        RafagaCPU = int.Parse(row.Cells["RAFAGA"].Value.ToString()),
+                        TiempoFinalizacion = int.Parse(row.Cells["TIEMPODEFINALIZACION"].Value.ToString()),
+                        Color = colores[i % colores.Length]
+                    }).ToList();
+
+                // Dibujar etiquetas de tiempo
+                int tiempoTotal = procesos.Max(p => p.TiempoFinalizacion);
+                for (int i = 0; i <= tiempoTotal; i++)
                 {
-                    tiempoActual = proceso.TiempoLlegada; // Ajustar el tiempo actual
+                    g.DrawString(i.ToString(), new Font("Arial", 8), Brushes.Black, i * anchoBarra, offsetY - 30);
                 }
 
-                // Agregar tiempos de inicio y fin a las listas
-                tiemposInicio.Add(tiempoActual);
-                tiemposFin.Add(tiempoActual + proceso.RafagaCPU);
+                // Dibujar las barras de los procesos
+                for (int i = 0; i < procesos.Count; i++)
+                {
+                    int tiempoInicio = procesos[i].TiempoFinalizacion - procesos[i].RafagaCPU;
+                    Rectangle rect = new Rectangle(tiempoInicio * anchoBarra, offsetY + (i * espacioEntreFilas), procesos[i].RafagaCPU * anchoBarra, alturaBarra);
+                    g.FillRectangle(new SolidBrush(procesos[i].Color), rect);
+                    g.DrawRectangle(Pens.Black, rect);
 
-                // Actualizar el tiempo actual para el siguiente proceso
-                tiempoActual += proceso.RafagaCPU;
+                    // Dibujar el nombre del proceso
+                    g.DrawString(procesos[i].Proceso, new Font("Arial", 10), Brushes.Black, tiempoInicio * anchoBarra - 40, offsetY + (i * espacioEntreFilas));
+
+                    // ** Inicio de la sección añadida para dibujar líneas en medio de cada proceso **
+                    for (int j = tiempoInicio; j < procesos[i].TiempoFinalizacion; j++)
+                    {
+                        int lineaX = j * anchoBarra;
+                        g.DrawLine(Pens.Red, lineaX, offsetY + (i * espacioEntreFilas), lineaX, offsetY + (i * espacioEntreFilas) + alturaBarra);
+                    }
+                    // ** Fin de la sección añadida **
+                }
+                //
             }
-
-            // Crear una nueva serie de tipo Bar (horizontal)
-            Series series = new Series
-            {
-                Name = "Ráfagas CPU",
-                Color = Color.Blue,
-                IsValueShownAsLabel = true,
-                ChartType = SeriesChartType.RangeBar // Usar RangeBar para mostrar tiempos de inicio y fin
-            };
-
-            // Agregar datos a la serie para el gráfico de Gantt
-            for (int i = 0; i < procesos.Count; i++)
-            {
-                // Longitud de la barra
-                int longitudBarra = tiemposFin[i] - tiemposInicio[i];
-
-                // Agregar el tiempo de inicio y longitud de la barra
-                series.Points.AddXY(tiemposInicio[i], longitudBarra); // Solo X (tiempo de inicio) y Y (longitud de la barra)
-            }
-
-            // Agregar la serie al gráfico
-            chart1.Series.Add(series);
-
-            // Configurar los valores de los ejes
-            chart1.ChartAreas[0].AxisX.Minimum = 0; // Ajustar el mínimo del eje X
-            chart1.ChartAreas[0].AxisX.Maximum = tiemposFin.Last(); // Máximo del eje X al tiempo final del último proceso
-
-            // Configuración adicional para el eje Y
-            chart1.ChartAreas[0].AxisY.Title = "Procesos";
-            chart1.ChartAreas[0].AxisX.Title = "Tiempo";
-
-            // Opcional: Mostrar un mensaje si se graficaron correctamente
-            MessageBox.Show("Gráfico generado con éxito.");
+            //
         }
 
-
-
-
-        private void chart1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            // Regresar al sub Menú
-            SubMenuNoExpropiativos nuevoForm = new SubMenuNoExpropiativos();
-            this.Hide();
-            nuevoForm.Show();
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            // Mostrar un cuadro de mensaje con "Hola"
-            MessageBox.Show("Es un algoritmo de planificación de procesos en el que se asigna una prioridad a cada proceso. Los procesos con mayor prioridad son ejecutados antes que los de menor prioridad. Si dos o más procesos tienen la misma prioridad, se pueden manejar de acuerdo a otros criterios, como el tiempo de llegada. Este enfoque ayuda a asegurar que los procesos críticos se completen antes que los menos importantes, optimizando así el uso de recursos y mejorando el rendimiento del sistema.", "Proceso de Prioridad");
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            // Mostrar un cuadro de mensaje con "Hola"
-            MessageBox.Show("La planificación por prioridades ejecuta procesos según su nivel de prioridad, dando preferencia a los más críticos. Si llega un proceso de mayor prioridad, puede interrumpir el actual, lo que puede causar problemas como starvation para los de baja prioridad.", "Proceso de Planificación por Prioridades");
-
-        }
 
         private void PRIORIDAD_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -289,6 +187,16 @@ namespace AlgoritmosDePlanificacion
             {
                 Environment.Exit(0);
             }
+            //
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            // Regresar al submenú
+            SubMenuNoExpropiativos nuevoForm = new SubMenuNoExpropiativos();
+            this.Hide();
+            nuevoForm.Show();
+            //
         }
     }
 }

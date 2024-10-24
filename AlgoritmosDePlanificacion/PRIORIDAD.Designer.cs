@@ -28,9 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             dataGridView1 = new DataGridView();
             Procesos = new DataGridViewTextBoxColumn();
             Prioridad1 = new DataGridViewTextBoxColumn();
@@ -41,13 +38,10 @@
             TIEMPODEESPERA = new DataGridViewTextBoxColumn();
             button1 = new Button();
             button2 = new Button();
-            chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             button3 = new Button();
             label1 = new Label();
-            button4 = new Button();
-            button5 = new Button();
+            panelGrafico = new Panel();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)chart1).BeginInit();
             SuspendLayout();
             // 
             // dataGridView1
@@ -56,11 +50,10 @@
             dataGridView1.BorderStyle = BorderStyle.None;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Procesos, Prioridad1, RAFAGA, TIEMPODELLEGADA, TIEMPODEFINALIZACION, TIEMPODERETORNO, TIEMPODEESPERA });
-            dataGridView1.Location = new Point(156, 105);
-            dataGridView1.Margin = new Padding(4);
+            dataGridView1.Location = new Point(33, 124);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(929, 296);
+            dataGridView1.Size = new Size(927, 237);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
@@ -117,10 +110,9 @@
             // 
             button1.Cursor = Cursors.Hand;
             button1.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            button1.Location = new Point(497, 432);
-            button1.Margin = new Padding(4);
+            button1.Location = new Point(317, 88);
             button1.Name = "button1";
-            button1.Size = new Size(109, 38);
+            button1.Size = new Size(197, 30);
             button1.TabIndex = 1;
             button1.Text = "ACEPTAR";
             button1.UseVisualStyleBackColor = true;
@@ -130,44 +122,22 @@
             // 
             button2.Cursor = Cursors.Hand;
             button2.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            button2.Location = new Point(651, 432);
-            button2.Margin = new Padding(4);
+            button2.Location = new Point(520, 88);
             button2.Name = "button2";
-            button2.Size = new Size(112, 38);
+            button2.Size = new Size(199, 30);
             button2.TabIndex = 2;
             button2.Text = "LIMPIAR";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
-            // 
-            // chart1
-            // 
-            chart1.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            chartArea3.Name = "ChartArea1";
-            chart1.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            chart1.Legends.Add(legend3);
-            chart1.Location = new Point(156, 594);
-            chart1.Margin = new Padding(4);
-            chart1.Name = "chart1";
-            chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SemiTransparent;
-            series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            chart1.Series.Add(series3);
-            chart1.Size = new Size(929, 271);
-            chart1.TabIndex = 3;
-            chart1.Text = "chart1";
-            chart1.Click += chart1_Click;
             // 
             // button3
             // 
             button3.Cursor = Cursors.Hand;
             button3.FlatStyle = FlatStyle.System;
             button3.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            button3.Location = new Point(41, 42);
-            button3.Margin = new Padding(4);
+            button3.Location = new Point(33, 34);
             button3.Name = "button3";
-            button3.Size = new Size(133, 39);
+            button3.Size = new Size(106, 31);
             button3.TabIndex = 4;
             button3.Text = "REGRESAR";
             button3.UseVisualStyleBackColor = true;
@@ -178,56 +148,36 @@
             label1.AutoSize = true;
             label1.Font = new Font("Britannic Bold", 25.8000011F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.Salmon;
-            label1.Location = new Point(427, 33);
-            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Location = new Point(342, 26);
             label1.Name = "label1";
-            label1.Size = new Size(398, 58);
+            label1.Size = new Size(337, 48);
             label1.TabIndex = 31;
             label1.Text = "POR PRIORIDAD";
             // 
-            // button4
+            // panelGrafico
             // 
-            button4.Location = new Point(572, 488);
-            button4.Margin = new Padding(4);
-            button4.Name = "button4";
-            button4.Size = new Size(55, 49);
-            button4.TabIndex = 32;
-            button4.Text = "?";
-            button4.UseVisualStyleBackColor = true;
-            button4.Click += button4_Click;
-            // 
-            // button5
-            // 
-            button5.Location = new Point(635, 488);
-            button5.Margin = new Padding(4);
-            button5.Name = "button5";
-            button5.Size = new Size(55, 49);
-            button5.TabIndex = 33;
-            button5.Text = "!";
-            button5.UseVisualStyleBackColor = true;
-            button5.Click += button5_Click;
+            panelGrafico.Location = new Point(33, 367);
+            panelGrafico.Name = "panelGrafico";
+            panelGrafico.Size = new Size(927, 268);
+            panelGrafico.TabIndex = 32;
             // 
             // PRIORIDAD
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1273, 906);
-            Controls.Add(button5);
-            Controls.Add(button4);
+            ClientSize = new Size(1018, 660);
+            Controls.Add(panelGrafico);
             Controls.Add(label1);
             Controls.Add(button3);
-            Controls.Add(chart1);
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(dataGridView1);
-            Margin = new Padding(4);
             Name = "PRIORIDAD";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "PRIORIDAD";
             FormClosing += PRIORIDAD_FormClosing;
             Load += PRIORIDAD_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)chart1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -244,10 +194,9 @@
         private DataGridViewTextBoxColumn TIEMPODEESPERA;
         private Button button1;
         private Button button2;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+
         private Button button3;
         private Label label1;
-        private Button button4;
-        private Button button5;
+        private Panel panelGrafico;
     }
 }

@@ -84,6 +84,9 @@ namespace AlgoritmosDePlanificacion
             {
                 MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            //Ejecuta La grafica
+            DibujarGrafica();
         }
 
         // Función para encontrar el índice del proceso con la menor ráfaga de CPU
@@ -150,6 +153,60 @@ namespace AlgoritmosDePlanificacion
             double PromEspera = espera / dato;
             txtPromEspera.Text = Math.Round(PromEspera, 2).ToString();
         }
+        private void DibujarGrafica()
+        {
+            // Limpiar el panel
+            panelGrafico.Invalidate();
+            panelGrafico.Update();
+
+            using (Graphics g = panelGrafico.CreateGraphics())
+            {
+                int anchoBarra = 40;  // Ancho de cada barra en el gráfico
+                int alturaBarra = 30; // Altura de cada barra en el gráfico
+                int offsetY = 50;     // Desplazamiento inicial en el eje Y
+                int espacioEntreFilas = 40; // Espacio entre las filas de los procesos
+                Color[] colores = { Color.Green, Color.Gray, Color.Purple, Color.Orange, Color.Blue };
+
+                // Crear una lista de procesos con su información relevante (inicio, finalización, etc.)
+                var procesos = CPU.Select((rafaga, i) => new
+                {
+                    Proceso = "P" + (i + 1),                // Nombre del proceso
+                    RafagaCPU = rafaga,                     // Ráfaga de CPU del proceso
+                    TiempoInicio = finalizacion[i] - rafaga, // Tiempo de inicio del proceso
+                    TiempoFinalizacion = finalizacion[i],    // Tiempo de finalización
+                    Color = colores[i % colores.Length]     // Color asignado al proceso
+                }).ToList();
+
+                // Determinar el tiempo total de la simulación para colocar las etiquetas de tiempo en el eje X
+                int tiempoTotal = procesos.Max(p => p.TiempoFinalizacion);
+                for (int i = 0; i <= tiempoTotal; i++)
+                {
+                    g.DrawString(i.ToString(), new Font("Arial", 8), Brushes.Black, i * anchoBarra, offsetY - 30);
+                }
+
+                // Dibujar las barras de los procesos
+                for (int i = 0; i < procesos.Count; i++)
+                {
+                    // Calcular la posición y tamaño de la barra para cada proceso
+                    Rectangle rect = new Rectangle(procesos[i].TiempoInicio * anchoBarra, offsetY + (i * espacioEntreFilas), procesos[i].RafagaCPU * anchoBarra, alturaBarra);
+
+                    // Dibujar la barra del proceso (llenado con color y borde)
+                    g.FillRectangle(new SolidBrush(procesos[i].Color), rect);
+                    g.DrawRectangle(Pens.Black, rect);
+
+                    // Dibujar el nombre del proceso sobre la barra
+                    g.DrawString(procesos[i].Proceso, new Font("Arial", 10), Brushes.Black, procesos[i].TiempoInicio * anchoBarra - 40, offsetY + (i * espacioEntreFilas));
+
+                    // ** Inicio de la sección añadida para dibujar líneas en medio de cada proceso **
+                    for (int j = procesos[i].TiempoInicio; j < procesos[i].TiempoFinalizacion; j++)
+                    {
+                        int lineaX = j * anchoBarra;
+                        g.DrawLine(Pens.Red, lineaX, offsetY + (i * espacioEntreFilas), lineaX, offsetY + (i * espacioEntreFilas) + alturaBarra);
+                    }
+                    // ** Fin de la sección añadida **
+                }
+            }
+        }
 
 
         private void btnRegresar_Click(object sender, EventArgs e)
@@ -166,11 +223,7 @@ namespace AlgoritmosDePlanificacion
             {
                 Environment.Exit(0);
             }
-        }
-
-        private void btnAceptar_Click(object sender, EventArgs e)
-        {
-            AceptarDatos();
+            //
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
@@ -179,5 +232,19 @@ namespace AlgoritmosDePlanificacion
             SJF reset = new SJF();
             reset.Show();
         }
+
+        private void btnAceptar_Click(object sender, EventArgs e)
+        {
+            // Verificar si el campo de texto de número de procesos está vacío o es un número inválido
+            if (string.IsNullOrWhiteSpace(txtNoProcesos.Text) || !int.TryParse(txtNoProcesos.Text, out int numProcesos) || numProcesos <= 0)
+            {
+                MessageBox.Show("Por favor, ingrese un número válido de procesos mayor a 0.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return; // Salir del método si el número de procesos no es válido
+            }
+
+            // Llamar al método AceptarDatos si la validación es correcta
+            AceptarDatos();
+        }
+
     }
 }

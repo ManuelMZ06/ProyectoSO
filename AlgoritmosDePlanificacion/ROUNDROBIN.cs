@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -70,6 +71,7 @@ namespace AlgoritmosDePlanificacion
             {
                 MessageBox.Show("Ingrese un dato válido: " + ex.Message, "Error Inesperado", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
         }
 
         private void MostrarResultados(int[] tiemposFin, int[] tiemposLlegada, int cambiosDeContexto, double[] tiemposEntrada)
@@ -126,6 +128,9 @@ namespace AlgoritmosDePlanificacion
             Array.Copy(CPU, remainingTime, dato); // Copiar el tiempo de CPU a remainingTime
             int tiempoActual = 0;
             Queue<int> cola = new Queue<int>();
+            List<(int proceso, int inicio, int duracion)> fragmentos = new List<(int proceso, int inicio, int duracion)>();
+            
+
 
             // Agregar procesos a la cola, considerando el tiempo de llegada
             for (int i = 0; i < dato; i++)
@@ -189,7 +194,13 @@ namespace AlgoritmosDePlanificacion
                     {
                         cola.Enqueue(index); // Si no ha terminado, lo vuelve a poner al final de la cola
                     }
+                    fragmentos.Add((index, tiempoActual, tiempoEjecutar)); // Agregar fragmento
                 }
+
+
+                // Llamada al dibujar la gráfica después de calcular Round Robin
+                DibujarGrafica(fragmentos, quantum); // Pasar los fragmentos a la gráfica
+
             }
 
             // Ajustar el tiempo de entrada restando el tiempo de espera antes de la primera ejecución
@@ -200,8 +211,63 @@ namespace AlgoritmosDePlanificacion
 
             MostrarResultados(tiemposFin, tiemposLlegada, cambiosDeContexto, tiemposEntrada);
         }
+        private void DibujarGrafica(List<(int proceso, int inicio, int duracion)> fragmentos, int quantum)
+        {
+            // Limpiar el panel
+            panelGrafico.Invalidate();
+            panelGrafico.Update();
 
+            // Obtener el objeto Graphics del panel
+            using (Graphics g = panelGrafico.CreateGraphics())
+            {
+                int anchoBarra = 20; // Ancho de cada barra
+                int alturaBarra = 20; // Altura de cada barra
+                int offsetY = 30; // Espacio vertical entre las filas de procesos
+                int margenVertical = 40; // Espacio inicial desde arriba para el primer proceso
 
+                // Colores para cada proceso
+                Color[] colores = { Color.Green, Color.Gray, Color.Purple, Color.Orange, Color.Blue };
+
+                // Variable para controlar el proceso actual
+                int procesoActual = -1;
+
+                // Dibujar los fragmentos de ejecución de cada proceso
+                foreach (var fragmento in fragmentos)
+                {
+                    int proceso = fragmento.proceso;
+                    int tiempoInicio = fragmento.inicio;
+                    int duracion = fragmento.duracion;
+
+                    // Crear el rectángulo para la barra del fragmento
+                    Rectangle rect = new Rectangle(tiempoInicio * anchoBarra, margenVertical + proceso * offsetY, duracion * anchoBarra, alturaBarra);
+                    g.FillRectangle(new SolidBrush(colores[proceso % colores.Length]), rect); // Rellenar la barra del fragmento
+                    g.DrawRectangle(Pens.Black, rect); // Dibujar el contorno del fragmento
+
+                    // Dibujar el nombre del proceso solo si es el primer fragmento de ese proceso
+                    if (proceso != procesoActual)
+                    {
+                        g.DrawString(lbProcesos.Items[proceso].ToString(), new Font("Arial", 8), Brushes.Black,
+                                     tiempoInicio * anchoBarra, margenVertical + proceso * offsetY - 15);
+                        procesoActual = proceso; // Actualizar el proceso actual
+                    }
+
+                    // ** Inicio de la sección añadida para dibujar líneas en medio de cada proceso **
+                    for (int j = tiempoInicio; j < tiempoInicio + duracion; j++)
+                    {
+                        int lineaX = j * anchoBarra;
+                        g.DrawLine(Pens.Red, lineaX, margenVertical + proceso * offsetY, lineaX, margenVertical + proceso * offsetY + alturaBarra);
+                    }
+                    // ** Fin de la sección añadida **
+                }
+
+                // Etiquetas del eje X (línea de tiempo en la parte superior)
+                int step = 1; // Cambia esto a 1 o 2 según el rango de datos
+                for (int i = 0; i <= sumaCPU; i += step)
+                {
+                    g.DrawString(i.ToString(), new Font("Arial", 6), Brushes.Black, i * anchoBarra, margenVertical - 15); // Mover etiquetas arriba
+                }
+            }
+        }
 
 
         private void button1_Click(object sender, EventArgs e)
@@ -223,6 +289,17 @@ namespace AlgoritmosDePlanificacion
         private void button2_Click(object sender, EventArgs e)
         {
             AceptarDatos(); // Asegúrate de aceptar los datos antes de calcular
+
+            // Verifica si hay procesos ingresados
+            if (lbProcesos.Items.Count == 0 || CPU.Length == 0)
+            {
+                MessageBox.Show("No se han ingresado procesos. Por favor, ingrese los datos antes de calcular.",
+                                "Datos no válidos",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return; // Salimos de la función si no hay datos
+            }
+
             CalcularRoundRobin(); // Ahora calcula el Round Robin
         }
 
