@@ -19,7 +19,7 @@ namespace AlgoritmosDePlanificacion
         int[] llegada;
         int[] finalizacion; // Para almacenar los tiempos de finalización
         double[] respuesta; // Para almacenar el Ratio de Respuesta
-        int sumaCPU;
+
         int tiempoActual = 0; // Para rastrear el tiempo actual
         bool[] ejecutado; // Para llevar un seguimiento de los procesos ejecutados
         List<string> nombresProcesos; // Para almacenar los nombres de los procesos en orden de llegada
@@ -34,10 +34,7 @@ namespace AlgoritmosDePlanificacion
                 ejecutado = new bool[dato]; // Inicializar el array de ejecutados
                 finalizacion = new int[dato]; // Inicializar el array de finalización
                 nombresProcesos = new List<string>(); // Inicializar la lista de nombres de procesos
-
-                // Inicializar las variables para calcular tiempos
-                sumaCPU = 0;
-
+                //
                 for (int i = 0; i < dato; i++)
                 {
                     int proceso = i + 1;
@@ -73,8 +70,7 @@ namespace AlgoritmosDePlanificacion
 
                 //Ejecutar la suma y los promedios
                 CalcularPromedios();
-
-                //Ejecutar mostrar grafica
+                //Ejecutar grafica
                 DibujarGrafica();
             }
             catch
@@ -191,51 +187,66 @@ namespace AlgoritmosDePlanificacion
             // Limpiar el panel
             panelGrafico.Invalidate();
             panelGrafico.Update();
-
-            // Obtener el objeto Graphics del panel
+            //
             using (Graphics g = panelGrafico.CreateGraphics())
             {
-                // Variables para la posición inicial en el eje X
-                int anchoBarra = 40; // Ancho de cada barra
+                int anchoBarra = 40;  // Ancho de cada barra
                 int alturaBarra = 30; // Altura de cada barra
-                int offsetY = 50; // Offset Y para el primer proceso
-                int tiempoInicio = 0; // Variable para manejar el tiempo de inicio de cada proceso
-
-                // Colores para cada proceso
+                int offsetY = 50;     // Offset inicial en Y
+                int espacioEntreFilas = 30; // Espacio entre filas
+                //
                 Color[] colores = { Color.Green, Color.Gray, Color.Purple, Color.Orange, Color.Blue };
 
-                for (int i = 0; i < CPU.Length; i++)
+                // Lista de procesos usando "P" y nombre del proceso
+                var procesos = CPU.Select((rafaga, i) => new
                 {
-                    // Calcular el tiempo de inicio del proceso
-                    tiempoInicio = finalizacion[i] - CPU[i];
+                    Proceso = "P" + (i + 1) + " - " + nombresProcesos[i], // "P" más el nombre del proceso
+                    RafagaCPU = rafaga, // Ráfaga de CPU
+                    TiempoInicio = finalizacion[i] - rafaga, // Tiempo de inicio
+                    TiempoFinalizacion = finalizacion[i], // Tiempo de finalización
+                    Color = colores[i % colores.Length] // Color para el proceso
+                }).ToList();
 
-                    // Definir el rectángulo para la barra
-                    Rectangle rect = new Rectangle(tiempoInicio * anchoBarra, offsetY, CPU[i] * anchoBarra, alturaBarra);
-
-                    // Elegir el color para la barra
-                    g.FillRectangle(new SolidBrush(colores[i % colores.Length]), rect);
-
-                    // Dibujar el borde de la barra
-                    g.DrawRectangle(Pens.Black, rect);
-
-                    // Etiqueta para el proceso
-                    g.DrawString(lbProcesos.Items[i].ToString(), new Font("Arial", 10), Brushes.Black,
-                                 tiempoInicio * anchoBarra, offsetY - 20);
+                // Dibujar etiquetas de tiempo
+                int tiempoTotal = procesos.Max(p => p.TiempoFinalizacion);
+                for (int i = 0; i <= tiempoTotal; i++)
+                {
+                    g.DrawString(i.ToString(), new Font("Arial", 8), Brushes.Black, i * anchoBarra, offsetY - 30);
                 }
 
-                // Etiquetas de tiempo en el eje X
-                for (int i = 0; i <= tiempoActual; i++)
+                // Dibujar las barras
+                for (int i = 0; i < procesos.Count; i++)
                 {
-                    // Dibuja los números en la parte inferior, alineados
-                    g.DrawString(i.ToString(), new Font("Arial", 8), Brushes.Black, i * anchoBarra, offsetY + alturaBarra + 5);
-                }
+                    Rectangle rect = new Rectangle(
+                        procesos[i].TiempoInicio * anchoBarra,
+                        offsetY + (i * espacioEntreFilas),
+                        procesos[i].RafagaCPU * anchoBarra,
+                        alturaBarra
+                    );
 
-                // Dibuja una línea horizontal para mayor claridad
-                g.DrawLine(Pens.Black, 0, offsetY + alturaBarra + 25, (tiempoActual + 1) * anchoBarra, offsetY + alturaBarra + 25);
+                    // Dibujar la barra
+                    g.FillRectangle(new SolidBrush(procesos[i].Color), rect);
+                    g.DrawRectangle(Pens.Black, rect); // Dibujar el borde
+
+                    // Dibujar el nombre del proceso (P + nombre)
+                    g.DrawString(procesos[i].Proceso, new Font("Arial", 10), Brushes.Black,
+                        procesos[i].TiempoInicio * anchoBarra - 40, offsetY + (i * espacioEntreFilas));
+
+                    // ** Inicio de la sección añadida para dibujar líneas en medio de cada proceso **
+                    for (int j = procesos[i].TiempoInicio; j < procesos[i].TiempoFinalizacion; j++)
+                    {
+                        int lineaX = j * anchoBarra;
+                        g.DrawLine(Pens.Red, lineaX, offsetY + (i * espacioEntreFilas), lineaX, offsetY + (i * espacioEntreFilas) + alturaBarra);
+                    }
+                    // ** Fin de la sección añadida **
+
+                }
+                //
             }
+            //
         }
 
-
+        //
         private void funcion1()
         {
             List<int> procesosDisponibles = new List<int>();
@@ -274,8 +285,7 @@ namespace AlgoritmosDePlanificacion
             }
             else
             {
-                // Si no hay más procesos disponibles, mostrar un mensaje
-                MessageBox.Show("No hay más procesos disponibles para ejecutar.");
+
             }
         }
 
@@ -299,25 +309,9 @@ namespace AlgoritmosDePlanificacion
                     EjecutarProceso(index); // Ejecuta cada proceso según el orden de ingreso
                 }
             }
-            else
-            {
-                // Si no hay más procesos disponibles, mostrar un mensaje
-                MessageBox.Show("No hay más procesos disponibles para ejecutar.");
-            }
+            //
         }
-
-
-        // Método para limpiar campos
-        private void LimpiarCampos()
-        {
-            txtNoProceso.Text = "";
-            lbProcesos.Items.Clear();
-            lblCPU.Items.Clear();
-            lblLlegada.Items.Clear();
-            lbFinalizacion.Items.Clear();
-            lblSumaCPU.Clear();
-        }
-
+        //
         private void button1_Click(object sender, EventArgs e)
         {
             // Regresar al sub Menú
@@ -328,6 +322,14 @@ namespace AlgoritmosDePlanificacion
 
         private void button2_Click(object sender, EventArgs e)
         {
+            // Verificar si el campo txtNoProceso está vacío
+            if (string.IsNullOrWhiteSpace(txtNoProceso.Text))
+            {
+                MessageBox.Show("El campo para el número de procesos no puede estar vacío", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Detener la ejecución si el campo está vacío
+            }
+
+            // Si no está vacío, continuar con la ejecución normal
             AceptarDatosHRRN();
         }
 
