@@ -319,9 +319,9 @@
             label12.Location = new Point(1011, 256);
             label12.Margin = new Padding(2, 0, 2, 0);
             label12.Name = "label12";
-            label12.Size = new Size(124, 23);
+            label12.Size = new Size(116, 23);
             label12.TabIndex = 45;
-            label12.Text = "FINALIZACION";
+            label12.Text = "PENALIZACIO";
             // 
             // lblPenalizacion
             // 
