@@ -125,11 +125,14 @@ namespace AlgoritmosDePlanificacion
         {
             for (int i = 0; i < dato; i++)
             {
-                // Calcular penalización
-                double penalizacion = (finalizacion[i] - llegada[i]) / (double)CPU[i];
+                // Calcular el tiempo de retorno como finalización - llegada
+                int tiempoRetorno = finalizacion[i] - llegada[i];
+
+                // Calcular penalización como tiempo de retorno dividido entre tiempo de CPU
+                double penalizacion = tiempoRetorno / (double)CPU[i];
 
                 // Mostrar penalización en lblPenalizacion
-                lblPenalizacion.Items.Add(penalizacion);
+                lblPenalizacion.Items.Add(penalizacion.ToString("F2"));
             }
         }
 
@@ -145,9 +148,12 @@ namespace AlgoritmosDePlanificacion
             {
                 if (ejecutado[i]) // Solo sumar si el proceso ha sido ejecutado
                 {
-                    sumaRetorno += finalizacion[i] - llegada[i]; // Calcular el tiempo de retorno
-                    sumaEspera += (finalizacion[i] - llegada[i]) - CPU[i]; // Calcular el tiempo de espera
-                    sumaPenalizacion += (sumaRetorno / CPU[i]); // Calcular la penalización
+                    int tiempoRetorno = finalizacion[i] - llegada[i];
+                    sumaRetorno += tiempoRetorno; // Calcular el tiempo de retorno
+                    sumaEspera += tiempoRetorno - CPU[i]; // Calcular el tiempo de espera
+
+                    // Calcular la penalización nuevamente para obtener la suma total
+                    sumaPenalizacion += tiempoRetorno / (double)CPU[i];
                     sumaCPU += CPU[i]; // Sumar las ráfagas de CPU
                     cantidadProcesos++;
                 }
@@ -164,6 +170,7 @@ namespace AlgoritmosDePlanificacion
             lblPromedioPenalizacion.Text = promedioPenalizacion.ToString("F2");
             lblSumaCPU.Text = sumaCPU.ToString(); // Mostrar suma total de CPU
         }
+
 
 
 
