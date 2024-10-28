@@ -105,28 +105,62 @@ namespace AlgoritmosDePlanificacion
                     tiempoRestante[procesoEjecutando]--;
                     historialEjecucion.Add((tiempoActual, procesoEjecutando)); // Registrar el tiempo y el proceso
                     tiempoActual++;
-                    //
+
                     if (tiempoRestante[procesoEjecutando] == 0)
                     {
-                        finalizacion[procesoEjecutando] = tiempoActual;
-                        retorno[procesoEjecutando] = finalizacion[procesoEjecutando] - tiempoLlegada[procesoEjecutando];
-                        espera[procesoEjecutando] = retorno[procesoEjecutando] - rafagaCPU[procesoEjecutando];
+                        finalizacion[procesoEjecutando] = tiempoActual; // Registrar tiempo de finalización
+                        retorno[procesoEjecutando] = finalizacion[procesoEjecutando] - tiempoLlegada[procesoEjecutando]; // Tiempo de retorno
+                        espera[procesoEjecutando] = retorno[procesoEjecutando] - rafagaCPU[procesoEjecutando]; // Tiempo de espera
                         procesosTerminados++;
-                        //
+
                     }
                     //
                 }
                 else
                 {
-                    //
-                    tiempoActual++;
+                    tiempoActual++; // Si no hay proceso para ejecutar, avanzamos el tiempo
                 }
-                //
+
             }
 
-            // Ordenar los resultados en función del orden de llegada
+            // Mostrar resultados al final de la simulación
             MostrarResultados(finalizacion, retorno, espera);
         }
+
+        private void MostrarResultados(List<int> finalizacion, List<int> retorno, List<int> espera)
+        {
+            // Limpiar listas visuales antes de agregar datos
+            lbFinalizacion.Items.Clear();
+            lbRetorno.Items.Clear();
+            lbEspera.Items.Clear();
+
+            // Mostrar resultados en el orden en que llegaron los procesos
+            for (int i = 0; i < ordenLlegada.Count; i++)
+            {
+                int idx = ordenLlegada[i]; // Índice del proceso original
+                lbFinalizacion.Items.Add(finalizacion[idx]);
+                lbRetorno.Items.Add(retorno[idx]);
+                lbEspera.Items.Add(espera[idx]);
+            }
+
+            // Calcular la suma correcta del uso de CPU, basada en las ráfagas de CPU
+            int sumaCPU = rafagaCPU.Sum();  // Ahora estamos sumando las ráfagas de CPU, no los tiempos de finalización
+            int sumaRetorno = retorno.Sum();
+            int sumaEspera = espera.Sum();
+
+            // Asegurarse de que los promedios se calculen correctamente con decimales
+            double promedioRetorno = Math.Round((double)sumaRetorno / retorno.Count, 2);
+            double promedioEspera = Math.Round((double)sumaEspera / espera.Count, 2);
+
+            // Mostrar resultados finales
+            txtSumaCPU.Text = sumaCPU.ToString();  // Mostrar la suma correcta de CPU
+            txtPromRetorno.Text = promedioRetorno.ToString("F2");
+            txtPromEspera.Text = promedioEspera.ToString("F2");
+
+            // Dibujar la gráfica después de calcular los resultados
+            DibujarGrafica();
+        }
+
 
         private void DibujarGrafica()
         {
@@ -174,37 +208,7 @@ namespace AlgoritmosDePlanificacion
             }
         }
 
-        //
-        // Método para mostrar resultados finales
-        private void MostrarResultados(List<int> finalizacion, List<int> retorno, List<int> espera)
-        {
-            // Limpiar listas visuales antes de agregar datos
-            lbFinalizacion.Items.Clear();
-            lbRetorno.Items.Clear();
-            lbEspera.Items.Clear();
-
-            // Mostrar resultados en el orden en que llegaron los procesos
-            for (int i = 0; i < ordenLlegada.Count; i++)
-            {
-                int idx = ordenLlegada[i]; // Índice del proceso original
-                lbFinalizacion.Items.Add(finalizacion[idx]);
-                lbRetorno.Items.Add(retorno[idx]);
-                lbEspera.Items.Add(espera[idx]);
-            }
-            //
-            // Calcular sumas y promedios
-            int sumaFinalizacion = finalizacion.Sum();
-            int sumaRetorno = retorno.Sum();
-            int sumaEspera = espera.Sum();
-
-            txtSumaCPU.Text = sumaFinalizacion.ToString();
-            txtPromRetorno.Text = (sumaRetorno / finalizacion.Count).ToString("F2");
-            txtPromEspera.Text = (sumaEspera / finalizacion.Count).ToString("F2");
-
-            // Llamar a la función para dibujar la gráfica
-            DibujarGrafica();
-        }
-        //
+        //        //
         private void button1_Click(object sender, EventArgs e)
         { //Regresar al sub Menú
             SubMenuExpropiativos nuevoForm = new SubMenuExpropiativos();
