@@ -60,7 +60,6 @@
             label13 = new Label();
             label14 = new Label();
             label15 = new Label();
-            label16 = new Label();
             button3 = new Button();
             SuspendLayout();
             // 
@@ -389,17 +388,6 @@
             label15.TabIndex = 51;
             label15.Text = "TIEMPO";
             // 
-            // label16
-            // 
-            label16.AutoSize = true;
-            label16.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            label16.Location = new Point(1032, 233);
-            label16.Margin = new Padding(2, 0, 2, 0);
-            label16.Name = "label16";
-            label16.Size = new Size(72, 23);
-            label16.TabIndex = 52;
-            label16.Text = "TIEMPO";
-            // 
             // button3
             // 
             button3.Cursor = Cursors.Hand;
@@ -418,7 +406,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1208, 879);
             Controls.Add(button3);
-            Controls.Add(label16);
             Controls.Add(label15);
             Controls.Add(label14);
             Controls.Add(label13);
@@ -490,7 +477,6 @@
         private Label label13;
         private Label label14;
         private Label label15;
-        private Label label16;
         private Button button3;
     }
 }
